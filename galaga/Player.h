@@ -34,7 +34,8 @@ private:
     std::string_view tag = "Player";
     int shoot_cooldown = 6;
     bool shooting = false;
-    // Player size: 40*40 pixels
+    float player_height = 40;
+    float player_width = 40;
 };
 
 #endif

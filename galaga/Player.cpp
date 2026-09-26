@@ -15,9 +15,10 @@ void Player::Initialize(CMPUT350::GameContext* context)
 
 void Player::Update(CMPUT350::GameContext* context)
 {
-    if (player_position.x + velocity < context->ScreenContext->GetWindowWidth() && player_position.x + velocity > 0) {
+    //the +40 is to account for the player size being 40 and player_position is the top left corner of its box
+    if (player_position.x + velocity + 40 < context->ScreenContext->GetWindowWidth() && player_position.x + velocity > 0) {
         SetPosition(player_position, velocity);
-    }else if (player_position.x + velocity == context->ScreenContext->GetWindowWidth() || player_position.x + velocity == 0) {
+    }else if (player_position.x + velocity + 40 == context->ScreenContext->GetWindowWidth() || player_position.x + velocity == 0) {
         SetPosition(player_position, velocity);
         velocity = 0;
     }
@@ -57,22 +58,23 @@ void Player::RenderForeground(CMPUT350::GameContext* context)
 
 void Player::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
+    CMPUT350::Rect bounds = GetBounds();
+    bounds.IsInside(obj->GetBounds().topLeft);
 }
 
 void Player::Kill()
 {
+    alive = false;
 }
 
 bool Player::IsAlive() const
 {
-    // TODO: Update code
     return alive;
 }
 
 const CMPUT350::Rect& Player::GetBounds()
 {
-    // TODO: Update code
-    static CMPUT350::Rect sBounds(0, 0, 0, 0);
+    static CMPUT350::Rect sBounds(player_position.x, player_position.y, player_width, player_height);
     return sBounds;
 }
 
