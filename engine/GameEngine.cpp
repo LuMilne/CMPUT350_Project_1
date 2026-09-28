@@ -1,26 +1,38 @@
 #include "GameEngine.h"
+#include "GameContext.h"
 
 /// @brief
 namespace CMPUT350 {
 #include "FontData.h"
-#include <vector>
+#include "Player.h"
+#include <SFML/Graphics/RenderWindow.hpp>
+#include <SFML/Window/VideoMode.hpp>
+#include <cassert>
 
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name) {
-
-    // Sample font loading code
-    //	if (!mFont->openFromMemory(&_font, _font_len))
-    //	{
-    //		fprintf(stderr, "WARNING: Font did not load.\n");
-    //	}
+    // Create game window
+    mWindow = std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
+    mWindow->setFramerateLimit(30);
+    // Load resources. For P(1a), just the font from the header file
+    if (!mFont->openFromMemory(&_font, _font_len)) {
+    	fprintf(stderr, "WARNING: Font did not load.\n");
+    }
+    // Set DrawContext using font
+    canvas = DrawContext(mWindow, mFont);
+    // Set GameContext using this and this.canvas
+    context.mEngineView = this;
+    context.ScreenContext = mFont;
 }
 
 GameEngine::~GameEngine() {
     // Cleanup resources
-    // mWindow->close();
+    activeObjects.clear();
+    incomingObjects.clear();
+    mWindow->close();
 }
 
 void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
-    gameObjects.push_back(gameObject);
+    incomingObjects.push_back(gameObject);
 }
 
 /**
@@ -33,9 +45,9 @@ void GameEngine::Run() {
     while (true)  // window is open
     {
         // 0. Remove any objects that are now dead
-        for( auto i = gameObjects.begin(); i != gameObjects.end() ) {
+        for( auto i = activeObjects.begin(); i != activeObjects.end(); /*No default iteration*/) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
-                gameObjects.erase(i);
+                activeObjects.erase(i);
             }
             else i++;
         }
@@ -45,38 +57,36 @@ void GameEngine::Run() {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
             // Time: 09/24/2026, 12:25pm
             // Referenced user quant's implementation of user David Schwartz' solution for passing shared_ptr between vectors
-            incomingObjects.back()->Initialize();   //TODO: Implement GameContext
-            gameObjects.push_back(std::move(incomingObjects.back()));
+            incomingObjects.back()->Initialize(&context);
+            activeObjects.push_back(std::move(incomingObjects.back()));
             assert(incomingObjects.back() == nullptr);
             incomingObjects.pop_back();
         }
 
         // 2. Process events
-        /* Example Code from Project1a doc
         if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>())
         {
-            if (keyPressed->unicode == 'p')
-            // do something here
-        }
-        */
-        if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>())
-        {
-            if (keyPressed->unicode == 'a') {
-
+             // Pass player input events to player
+            if (keyPressed->unicode == 'a' || keyPressed->unicode == 'd' || keyPressed->unicode == ' ') {
+                // Get player
+                std::weak_ptr<GameObject> player;
+                for( auto obj : activeObjects ) {
+                    if( typeid(obj.get()) == typeid(Player) ) {
+                        player = obj;
+                        break;
+                    }
+                }
+                // Check for player collection
+                if (player.lock() == nullptr) { 
+                    fprintf(stderr, "WARNING: Player was not found.\n");
+                }
             }
-            else if (keyPressed->unicode == 'd') {
-                
-            }
-            if (keyPressed->unicode == ' ') {    // Verify this functions as correct input
-                
-            }
-            
         }
 
 
         // 3. Update game objects
-        for( auto obj : *gameObjects ) {
-            obj->Update();                  // TODO: Figure out GameContext
+        for( auto obj : activeObjects ) {
+            obj->Update(&context);                  // TODO: Figure out GameContext
         }
 
         // 4. Process collision events
@@ -96,12 +106,26 @@ void GameEngine::Run() {
         //? for (obj : game_objects) { obj->LateUpdate() }
 
         // Clear window
+        mWindow->resetGLStates();
 
         // 6. Render background
+        for( auto obj : activeObjects ) {
+            // Filter for GraphicsObject subclasses
+            if( auto sub = dynamic_cast<CMPUT350::GraphicsObject*>(obj.get()) ) {
+                sub->RenderBackground(&context);
+            }
+        }
 
         // 7. Render foreground
+        for( auto obj : activeObjects ) {
+            // Filter for GraphicsObject subclasses
+            if( auto sub = dynamic_cast<CMPUT350::GraphicsObject*>(obj.get()) ) {
+                sub->RenderForeground(&context);
+            }
+        }
 
         // Actually render to window
+        mWindow->draw(&context);
     }
 }
 
