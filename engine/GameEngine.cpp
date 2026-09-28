@@ -69,7 +69,7 @@ void GameEngine::Run() {
              // Pass player input events to player
             if (keyPressed->unicode == 'a' || keyPressed->unicode == 'd' || keyPressed->unicode == ' ') {
                 // Get player
-                std::weak_ptr<GameObject> player;
+                std::shared_ptr<GameObject> player;
                 for( auto obj : activeObjects ) {
                     if( typeid(obj.get()) == typeid(Player) ) {
                         player = obj;
@@ -77,8 +77,11 @@ void GameEngine::Run() {
                     }
                 }
                 // Check for player collection
-                if (player.lock() == nullptr) { 
+                if (player.get() == nullptr) { 
                     fprintf(stderr, "WARNING: Player was not found.\n");
+                }
+                else {
+                    player->HandleKeyEvent(context, keyPressed->unicode);
                 }
             }
         }
