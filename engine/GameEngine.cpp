@@ -21,7 +21,7 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
     canvas = DrawContext(mWindow, mFont);
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
-    context.ScreenContext = mFont;
+    context.ScreenContext = canvas;
 }
 
 GameEngine::~GameEngine() {
