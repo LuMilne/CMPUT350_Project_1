@@ -103,7 +103,10 @@ void GameEngine::Run() {
         */
 
         // 5. Late updates
-        //? for (obj : game_objects) { obj->LateUpdate() }
+        for( auto obj : activeObjects ) {
+            // Filter for GraphicsObject subclasses
+            obj->LateUpdate(context);
+        }
 
         // Clear window
         mWindow->resetGLStates();
