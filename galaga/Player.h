@@ -3,6 +3,7 @@
 
 #include "CollisionObject.h"
 
+
 class Player : public CMPUT350::CollisionObject
 {
 public:
@@ -36,6 +37,9 @@ private:
     bool shooting = false;
     float player_height = 40;
     float player_width = 40;
+    std::weak_ptr<CMPUT350::Bullet> bullet_one;
+    std::weak_ptr<CMPUT350::Bullet> bullet_two;
+    CMPUT350::Rect bounds;
 };
 
 #endif

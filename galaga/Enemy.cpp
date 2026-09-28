@@ -4,6 +4,8 @@
 Enemy::Enemy(CMPUT350::Point2D loc)
 {
     // TODO: Update code
+    enemy_position = loc;
+    alive = true;
 }
 
 void Enemy::Initialize(CMPUT350::GameContext* context)
@@ -32,15 +34,21 @@ void Enemy::RenderForeground(CMPUT350::GameContext* context)
 
 void Enemy::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
+    bounds = GetBounds();
+    if (bounds.IsInside(obj->GetBounds().topLeft)) {
+        Kill();
+    }
 }
 
 void Enemy::Kill()
 {
+    alive = false;
 }
 
 bool Enemy::IsAlive() const
 {
     // TODO: Update code
+    
     return true;
 }
 
