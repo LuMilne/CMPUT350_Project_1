@@ -22,6 +22,9 @@ void Player::Update(CMPUT350::GameContext* context)
         SetPosition(player_position, velocity);
         velocity = 0;
     }
+
+    bounds = GetBounds();
+
 }
 
 void Player::LateUpdate(CMPUT350::GameContext* context)
@@ -57,6 +60,7 @@ bool Player::HandleKeyEvent(CMPUT350::GameContext* context, char key)
             shooting = true;
             return true;
         }
+        return true;
     }
 
     velocity = 0;
@@ -70,6 +74,7 @@ void Player::RenderBackground(CMPUT350::GameContext* context)
 
 void Player::RenderForeground(CMPUT350::GameContext* context)
 {
+    context->ScreenContext->DrawRect(bounds, colour);
 }
 
 void Player::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)

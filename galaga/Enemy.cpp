@@ -14,6 +14,7 @@ void Enemy::Initialize(CMPUT350::GameContext* context)
 
 void Enemy::Update(CMPUT350::GameContext* context)
 {
+    bounds = GetBounds();
 }
 
 void Enemy::LateUpdate(CMPUT350::GameContext* context)
@@ -31,6 +32,7 @@ void Enemy::RenderBackground(CMPUT350::GameContext* context)
 
 void Enemy::RenderForeground(CMPUT350::GameContext* context)
 {
+    context->ScreenContext->DrawRect(bounds, colour);
 }
 
 void Enemy::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)

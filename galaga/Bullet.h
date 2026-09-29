@@ -28,10 +28,11 @@ namespace CMPUT350 {
     private:
         bool is_player;
         bool alive;
-        CMPUT350::Point2D loc;
-        CMPUT350::Point2D head;
-        CMPUT350::Rect bounds;
+        Point2D loc;
+        Point2D head;
+        Rect bounds;
         float velocity;
+        RGBColor colour = Colors::green;
     };
 }
 #endif // BULLET_H

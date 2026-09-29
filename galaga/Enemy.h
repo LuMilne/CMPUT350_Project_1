@@ -33,6 +33,7 @@ private:
     float enemy_height = 30;
     float enemy_width = 35;
     CMPUT350::Rect bounds;
+    CMPUT350::RGBColor colour = CMPUT350::Colors::red;
 };
 
 

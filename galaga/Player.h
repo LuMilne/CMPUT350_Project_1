@@ -40,6 +40,8 @@ private:
     std::weak_ptr<CMPUT350::Bullet> bullet_one;
     std::weak_ptr<CMPUT350::Bullet> bullet_two;
     CMPUT350::Rect bounds;
+    sf::RectangleShape rect;
+    CMPUT350::RGBColor colour = CMPUT350::Colors::yellow;
 };
 
 #endif

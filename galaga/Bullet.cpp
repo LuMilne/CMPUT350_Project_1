@@ -20,7 +20,11 @@ void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
 
 void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
 {
-    loc += velocity;
+    loc.y += velocity;
+    if (loc.y + 10 < 0) {
+        Kill();
+    }
+    bounds = GetBounds();
 }
 
 void CMPUT350::Bullet::LateUpdate(CMPUT350::GameContext* context)
@@ -38,6 +42,7 @@ void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 
 void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
+    context->ScreenContext->DrawRect(bounds, colour);
 }
 
 void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
@@ -50,6 +55,7 @@ void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionO
 
 void CMPUT350::Bullet::Kill()
 {
+    alive = false;
 }
 
 bool CMPUT350::Bullet::IsAlive() const
@@ -61,6 +67,6 @@ bool CMPUT350::Bullet::IsAlive() const
 const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
 {
     // TODO: Update code
-    static CMPUT350::Rect sBounds(loc.x, loc.y, 5, 10);
-    return sBounds;
+    bounds = Rect(loc.x, loc.y, 5, 10);
+    return bounds;
 }
