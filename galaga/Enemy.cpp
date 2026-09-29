@@ -22,6 +22,7 @@ void Enemy::LateUpdate(CMPUT350::GameContext* context)
 
 bool Enemy::HandleKeyEvent(CMPUT350::GameContext* context, char key)
 {
+    return false;
 }
 
 void Enemy::RenderBackground(CMPUT350::GameContext* context)
@@ -48,13 +49,12 @@ void Enemy::Kill()
 bool Enemy::IsAlive() const
 {
     // TODO: Update code
-    
-    return true;
+    return alive;
 }
 
 const CMPUT350::Rect& Enemy::GetBounds()
 {
     // TODO: Update code
-    static CMPUT350::Rect sBounds(0, 0, 0, 0);
-    return sBounds;
+    bounds = CMPUT350::Rect(enemy_position.x, enemy_position.y, enemy_width, enemy_height);
+    return bounds;
 }
