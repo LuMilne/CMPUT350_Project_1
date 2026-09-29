@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player)
+CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player)
 {
     is_player = player;
     alive = true;
@@ -9,38 +9,38 @@ Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool playe
     velocity = head.y * 20;
 }
 
-bool Bullet::IsPlayerBullet()
+bool CMPUT350::Bullet::IsPlayerBullet()
 {
     return is_player;
 }
 
-void Bullet::Initialize(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
 {
 }
 
-void Bullet::Update(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
 {
     loc += velocity;
 }
 
-void Bullet::LateUpdate(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::LateUpdate(CMPUT350::GameContext* context)
 {
 }
 
-bool Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
+bool CMPUT350::Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
 {
     return false;
 }
 
-void Bullet::RenderBackground(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 {
 }
 
-void Bullet::RenderForeground(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
 }
 
-void Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
+void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
     bounds = GetBounds();
     if (bounds.IsInside(obj->GetBounds().topLeft)) {
@@ -48,17 +48,17 @@ void Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& ob
     }
 }
 
-void Bullet::Kill()
+void CMPUT350::Bullet::Kill()
 {
 }
 
-bool Bullet::IsAlive() const
+bool CMPUT350::Bullet::IsAlive() const
 {
     // TODO: Update code
     return alive;
 }
 
-const CMPUT350::Rect& Bullet::GetBounds()
+const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
 {
     // TODO: Update code
     static CMPUT350::Rect sBounds(loc.x, loc.y, 5, 10);
