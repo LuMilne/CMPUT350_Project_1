@@ -42,7 +42,7 @@ void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 
 void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
-    context->ScreenContext->DrawRect(bounds, colour);
+    context->ScreenContext->DrawLine(head, loc, 5.f, colour);
 }
 
 void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)

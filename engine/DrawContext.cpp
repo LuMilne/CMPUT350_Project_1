@@ -9,9 +9,21 @@ void DrawContext::DrawCenteredText(const std::string &text, int pixelSize, Point
 
 void DrawContext::DrawText(const std::string &text, int pixelSize, Point2D p, RGBColor c) {}
 
-void DrawContext::DrawCircle(Point2D p, float radius, RGBColor c) {}
+void DrawContext::DrawCircle(Point2D p, float radius, RGBColor c) {
+    sf::CircleShape circle(radius);
+    circle.setFillColor(sf::Color(c.r, c.g, c.b));
+    circle.setPosition({p.x, p.y});
+    circle.setOrigin({radius, radius});
+    mWindow->draw(circle);
+}
 
-void DrawContext::DrawRect(Rect r, RGBColor c) {}
+void DrawContext::DrawRect(Rect r, RGBColor c) {
+    sf::RectangleShape rect({r.width, r.height});
+    rect.setFillColor(sf::Color(c.r, c.g, c.b));
+    rect.setPosition({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
+    rect.setOrigin({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
+    mWindow->draw(rect);
+}
 
 void DrawContext::FrameRect(Rect r, float width, RGBColor c) {}
 
