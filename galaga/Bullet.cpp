@@ -7,6 +7,7 @@ CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, 
     loc = location;
     head = heading;
     velocity = head.y * 20;
+    top_Point = loc;
 }
 
 bool CMPUT350::Bullet::IsPlayerBullet()
@@ -22,6 +23,7 @@ void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
 void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
 {
     loc.y += velocity;
+    top_Point.y = loc.y + 50;
     if (loc.y + 10 < 0) {
         Kill();
     }
@@ -43,7 +45,7 @@ void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 
 void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
-    context->ScreenContext->DrawLine(head, loc, 5.f, colour);
+    context->ScreenContext->DrawLine(top_Point, loc, 5.f, colour);
 }
 
 void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)

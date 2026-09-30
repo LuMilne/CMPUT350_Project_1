@@ -20,8 +20,8 @@ void DrawContext::DrawCircle(Point2D p, float radius, RGBColor c) {
 void DrawContext::DrawRect(Rect r, RGBColor c) {
     sf::RectangleShape rect({r.width, r.height});
     rect.setFillColor(sf::Color(c.r, c.g, c.b));
+    //rect.setOrigin({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
     rect.setPosition({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
-    rect.setOrigin({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
     mWindow->draw(rect);
 }
 
