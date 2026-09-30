@@ -10,6 +10,9 @@ class GameEngine;
 #include "GameObject.h"
 #include "MathUtil.h"
 #include <SFML/Graphics.hpp>
+#include <SFML/Window/Event.hpp>
+#include <vector>
+#include <memory>
 
 namespace CMPUT350 {
 
@@ -30,8 +33,13 @@ public:
     void Run();
 
 private:
-    //	std::shared_ptr<sf::RenderWindow> mWindow;
-    //	std::shared_ptr<sf::Font> mFont;
+    std::shared_ptr<sf::RenderWindow> mWindow;
+    std::shared_ptr<sf::Font> mFont;
+    DrawContext canvas;
+    GameContext context;
+    std::vector<std::shared_ptr<GameObject>> activeObjects;
+    std::vector<std::shared_ptr<GameObject>> incomingObjects;
+    sf::Event* event;
 };
 
 }  // namespace CMPUT350
