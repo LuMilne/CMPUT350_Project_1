@@ -8,14 +8,17 @@ namespace CMPUT350 {
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
+#include "GraphicsObject.h"
 
-GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name) {
+GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
+    : canvas(mWindow, mFont) {
     // Create game window
-    mWindow = std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
+    mWindow =
+        std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
     if (!mFont->openFromMemory(&_font, _font_len)) {
-    	fprintf(stderr, "WARNING: Font did not load.\n");
+        fprintf(stderr, "WARNING: Font did not load.\n");
     }
     // Set DrawContext using font
     canvas = DrawContext(mWindow, mFont);
