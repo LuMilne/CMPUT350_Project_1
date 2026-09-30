@@ -19,8 +19,9 @@ void Player::Update(CMPUT350::GameContext* context)
     //the +40 is to account for the player size being 40 and player_position is the top left corner of its box
     if (player_position.x + velocity + 40 < context->ScreenContext->GetWindowWidth() && player_position.x + velocity > 0) {
         SetPosition(player_position, velocity);
+        velocity = 0;
     }else if (player_position.x + velocity + 40 >= context->ScreenContext->GetWindowWidth() || player_position.x + velocity <= 0) {
-        SetPosition(player_position, velocity);
+        SetPosition(player_position, 0);
         velocity = 0;
     }
 
@@ -36,11 +37,11 @@ void Player::LateUpdate(CMPUT350::GameContext* context)
 bool Player::HandleKeyEvent(CMPUT350::GameContext* context, char key)
 {
     if (key == 'a') {
-        velocity = -2;
+        velocity = -6;
         return true;
     }
     if (key == 'd') {
-        velocity = 2;
+        velocity = 6;
         return true;
     }
 

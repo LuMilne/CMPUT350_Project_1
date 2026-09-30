@@ -16,6 +16,7 @@ bool CMPUT350::Bullet::IsPlayerBullet()
 
 void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
 {
+//    std::cout << "Bullet spawned at (" << loc.x << ',' << loc.y << ")\n";
 }
 
 void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
