@@ -29,6 +29,7 @@ namespace CMPUT350 {
         bool is_player;
         bool alive;
         Point2D loc;
+        Point2D top_Point;
         Point2D head;
         Rect bounds;
         float velocity;
