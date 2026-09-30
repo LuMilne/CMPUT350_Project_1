@@ -24,7 +24,7 @@ void Player::Update(CMPUT350::GameContext* context)
         velocity = 0;
     }
 
-    bounds = GetBounds();
+    SetPosition(player_position, velocity);
 
 }
 
@@ -76,6 +76,7 @@ void Player::RenderBackground(CMPUT350::GameContext* context)
 
 void Player::RenderForeground(CMPUT350::GameContext* context)
 {
+    bounds = GetBounds();
     context->ScreenContext->DrawRect(bounds, colour);
 }
 
