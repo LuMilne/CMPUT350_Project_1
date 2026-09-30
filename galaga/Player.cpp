@@ -23,8 +23,6 @@ void Player::Update(CMPUT350::GameContext* context)
         SetPosition(player_position, 0);
     }
 
-    SetPosition(player_position, velocity);
-
 }
 
 void Player::LateUpdate(CMPUT350::GameContext* context)
@@ -79,8 +77,9 @@ void Player::RenderBackground(CMPUT350::GameContext* context)
 
 void Player::RenderForeground(CMPUT350::GameContext* context)
 {
-    bounds = GetBounds();
-    context->ScreenContext->DrawRect(bounds, colour);
+    //bounds = GetBounds();
+    CMPUT350::Rect player_obj(player_position.x, player_position.y, player_width, player_height);
+    context->ScreenContext->DrawRect(player_obj, colour);
 }
 
 void Player::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
