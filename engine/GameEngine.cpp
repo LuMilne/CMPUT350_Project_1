@@ -17,9 +17,9 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
         std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
-    if (!mFont->openFromMemory(&_font, _font_len)) {
+    /*if (!mFont->openFromMemory(&_font, _font_len)) {
         fprintf(stderr, "WARNING: Font did not load.\n");
-    }
+    }*/
     // Set DrawContext using font
     canvas = DrawContext(mWindow, mFont);
     // Set GameContext using this and this.canvas
@@ -71,6 +71,7 @@ void GameEngine::Run() {
         {
              // Pass player input events to player
             if (keyPressed->unicode == 'a' || keyPressed->unicode == 'd' || keyPressed->unicode == ' ') {
+/*
                 // Get player
                 std::shared_ptr<GameObject> player;
                 for( auto obj : activeObjects ) {
@@ -86,7 +87,14 @@ void GameEngine::Run() {
                 else {
                     player->HandleKeyEvent(&context, keyPressed->unicode);
                 }
+*/
+                for( auto obj : activeObjects ) {
+                    if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
+                        if(sub != nullptr) {sub->HandleKeyEvent(&context,keyPressed->unicode);} // Pass key pressed to Player to handle response
+                    }
+                }
             }
+
         }
 
 
@@ -107,6 +115,7 @@ void GameEngine::Run() {
             Bullet --> Player (later project phase?)
             Enemy --> Player (later project phase)
         */
+
 
         // 5. Late updates
         for( auto obj : activeObjects ) {
