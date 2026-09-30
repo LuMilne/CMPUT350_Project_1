@@ -45,7 +45,7 @@ void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
  * all objects have been destroyed.
  */
 void GameEngine::Run() {
-    while (true)  // window is open
+    while (mWindow->isOpen())  // window is open
     {
 //        std::cout << "Loop start\n";
 //        std::cout << "0? ";
@@ -55,11 +55,9 @@ void GameEngine::Run() {
         while(  i != activeObjects.end() ) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
                 activeObjects.erase(i);
-                std::cout << "erasing\n";
                 i = activeObjects.begin();  // Inefficient navigation of vector, but bug free. Maybe fix later.
             }
             else {i++;}
-            std::cout << activeObjects.size();
         }
 //        std::cout << "0. ";
 
@@ -81,7 +79,8 @@ void GameEngine::Run() {
         //auto* temp = event->getIf<sf::Event::KeyPressed>();
         if (std::optional<sf::Event> event = mWindow->pollEvent())
         {
-            if(event->getIf<sf::Event::Closed>()) {
+            if(event->is<sf::Event::Closed>()) {
+                std::cout << "closing...\n";
                 mWindow->close();
             }
             if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {    // Keypress controls for Player
@@ -94,6 +93,8 @@ void GameEngine::Run() {
                         cmd = 'd'; break;
                     case sf::Keyboard::Key::Space:
                         cmd = ' '; break;
+                    case sf::Keyboard::Key::Escape:
+                        mWindow->close(); break;
                     default:
                         break;
                 };
