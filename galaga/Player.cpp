@@ -19,7 +19,7 @@ void Player::Update(CMPUT350::GameContext* context)
     //the +40 is to account for the player size being 40 and player_position is the top left corner of its box
     if (player_position.x + velocity + 40 < context->ScreenContext->GetWindowWidth() && player_position.x + velocity > 0) {
         SetPosition(player_position, velocity);
-    }else if (player_position.x + velocity + 40 >= context->ScreenContext->GetWindowWidth() || player_position.x + velocity <= 0) {
+    }else if (player_position.x + velocity + 80 >= context->ScreenContext->GetWindowWidth() || player_position.x + velocity <= 0) {
         SetPosition(player_position, 0);
     }
 

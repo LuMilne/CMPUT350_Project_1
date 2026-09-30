@@ -50,11 +50,16 @@ void GameEngine::Run() {
 //        std::cout << "Loop start\n";
 //        std::cout << "0? ";
         // 0. Remove any objects that are now dead
-        for( auto i = activeObjects.begin(); i != activeObjects.end(); /*No default iteration*/) {
+        //std::cout << "active = " << activeObjects.size() << '\n'; 
+        auto i = activeObjects.begin(); 
+        while(  i != activeObjects.end() ) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
                 activeObjects.erase(i);
+                std::cout << "erasing\n";
+                i = activeObjects.begin();  // Inefficient navigation of vector, but bug free. Maybe fix later.
             }
-            else i++;
+            else {i++;}
+            std::cout << activeObjects.size();
         }
 //        std::cout << "0. ";
 
