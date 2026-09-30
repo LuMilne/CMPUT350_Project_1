@@ -1,14 +1,14 @@
 #include "GameEngine.h"
 #include "GameContext.h"
-
-/// @brief
-namespace CMPUT350 {
 #include "FontData.h"
 #include "../galaga/Player.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
 #include "GraphicsObject.h"
+
+/// @brief
+namespace CMPUT350 {
 
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
     : canvas(mWindow, mFont) {
@@ -24,7 +24,7 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
     canvas = DrawContext(mWindow, mFont);
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
-    context.ScreenContext = canvas;
+    context.ScreenContext = &canvas;
 }
 
 GameEngine::~GameEngine() {
@@ -134,7 +134,7 @@ void GameEngine::Run() {
         }
 
         // Actually render to window
-        mWindow->draw(&context);
+        mWindow->display();
     }
 }
 
