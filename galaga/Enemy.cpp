@@ -38,7 +38,10 @@ void Enemy::RenderForeground(CMPUT350::GameContext* context)
 void Enemy::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
     bounds = GetBounds();
-    if (bounds.IsInside(obj->GetBounds().topLeft)) {
+    //if (bounds.IsInside(obj->GetBounds().topLeft)) {
+    //    Kill();
+    //}
+    if (obj->GetBounds().IsInside(bounds.topLeft)) {
         Kill();
     }
 }
