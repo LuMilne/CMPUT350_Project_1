@@ -1,7 +1,7 @@
 #ifndef PLAYER_H
 #define PLAYER_H
 
-#include "CollisionObject.h"
+#include "../engine/CollisionObject.h"
 
 
 class Player : public CMPUT350::CollisionObject
