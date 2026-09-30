@@ -2,13 +2,13 @@
 #include "GameContext.h"
 
 /// @brief
-namespace CMPUT350 {
 #include "FontData.h"
 #include "../galaga/Player.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
 #include "GraphicsObject.h"
+namespace CMPUT350 {
 
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
     : canvas(mWindow, mFont) {
