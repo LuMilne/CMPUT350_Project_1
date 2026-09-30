@@ -1,8 +1,10 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
+#include "GameContext.h"
+#include <string_view>
 
 namespace CMPUT350 {
-
+class Bullet;
 class GameContext;
 
 class GameObject {
@@ -16,7 +18,6 @@ public:
     virtual bool IsAlive() const;
     virtual void Kill();
 };
-
 }  // namespace CMPUT350
 
 #endif  // GAMEOBJECT_H

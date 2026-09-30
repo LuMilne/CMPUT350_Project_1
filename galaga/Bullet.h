@@ -3,28 +3,36 @@
 
 #include "CollisionObject.h"
 #include "GameContext.h"
+namespace CMPUT350 {
+    class Bullet : public CMPUT350::CollisionObject
+    {
+    public:
+        Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player);
+        bool IsPlayerBullet();
 
-class Bullet : public CMPUT350::CollisionObject
-{
-public:
-    Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player);
-    bool IsPlayerBullet();
+        // GameObject Functions
+        void Initialize(CMPUT350::GameContext* context) override;
+        void Update(CMPUT350::GameContext* context) override;
+        void LateUpdate(CMPUT350::GameContext* context) override;
+        bool HandleKeyEvent(CMPUT350::GameContext* context, char key) override;
+        bool IsAlive() const override;
+        void Kill() override;
 
-    // GameObject Functions
-    void Initialize(CMPUT350::GameContext* context) override;
-    void Update(CMPUT350::GameContext* context) override;
-    void LateUpdate(CMPUT350::GameContext* context) override;
-    bool HandleKeyEvent(CMPUT350::GameContext* context, char key) override;
-    bool IsAlive() const override;
-    void Kill() override;
+        // Graphics Object Functions
+        void RenderBackground(CMPUT350::GameContext* context) override;
+        void RenderForeground(CMPUT350::GameContext* context) override;
 
-    // Graphics Object Functions
-    void RenderBackground(CMPUT350::GameContext* context) override;
-    void RenderForeground(CMPUT350::GameContext* context) override;
-
-    // Collision Object Functions
-    void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
-    const CMPUT350::Rect& GetBounds() override;
-private:
-};
+        // Collision Object Functions
+        void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
+        const CMPUT350::Rect& GetBounds() override;
+    private:
+        bool is_player;
+        bool alive;
+        Point2D loc;
+        Point2D head;
+        Rect bounds;
+        float velocity;
+        RGBColor colour = Colors::green;
+    };
+}
 #endif // BULLET_H
