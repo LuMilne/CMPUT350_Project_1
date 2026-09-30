@@ -39,7 +39,15 @@ void DrawContext::FrameRect(Rect r, float width, RGBColor c) {}
  * and uses a polygone shape to represent the line. The line is drawn
  * relative to the world offset and rendered onto the associated window.
  */
-void DrawContext::DrawLine(Point2D from, Point2D to, float width, RGBColor c) {}
+void DrawContext::DrawLine(Point2D from, Point2D to, float width, RGBColor c) {
+    float top_point = std::min(to.y, from.y);
+    float length = std::abs(to.y - from.y);
+
+    sf::RectangleShape rect({width, length});
+    rect.setPosition({from.x - width/2, top_point});
+    rect.setFillColor(sf::Color(c.r, c.g, c.b));
+    mWindow->draw(rect);
+}
 
 int DrawContext::GetWindowWidth() { return mWindow->getSize().x; }
 
