@@ -1,13 +1,13 @@
 #include "GameEngine.h"
 #include "GameContext.h"
+
+/// @brief
 #include "FontData.h"
 #include "../galaga/Player.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
 #include "GraphicsObject.h"
-
-/// @brief
 namespace CMPUT350 {
 
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
