@@ -79,7 +79,7 @@ void GameEngine::Run() {
             if(event->getIf<sf::Event::Closed>()) {
                 mWindow->close();
             }
-            if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+            if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {    // Keypress controls for Player
                 // Pass player input events to player
                 char cmd = 'l';
                 switch(keyPressed->code) {
@@ -92,12 +92,30 @@ void GameEngine::Run() {
                     default:
                         break;
                 };
-                std::cout << "switched...\n";
 
                 if( cmd != 'l' ) {
                     for( auto obj : activeObjects ) {
                         if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
                             if(sub != nullptr) {sub->HandleKeyEvent(&context,cmd);} // Pass key pressed to Player to handle response
+                        }
+                    }
+                }
+            }
+            if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
+                // Pass player input events to player
+                char cmd = 'l';
+                switch(keyReleased->code) {
+                    case sf::Keyboard::Key::A:
+                        cmd = 'r'; break;
+                    case sf::Keyboard::Key::D:
+                        cmd = 'r'; break;
+                    default:
+                        break;
+                };
+                if( cmd != 'l' ) {
+                    for( auto obj : activeObjects ) {
+                        if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
+                            if(sub != nullptr) {sub->HandleKeyEvent(&context,cmd);} // Pass key released to Player to handle response
                         }
                     }
                 }
