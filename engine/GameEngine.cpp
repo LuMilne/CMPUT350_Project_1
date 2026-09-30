@@ -4,7 +4,7 @@
 /// @brief
 namespace CMPUT350 {
 #include "FontData.h"
-#include "Player.h"
+#include "../galaga/Player.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
@@ -84,7 +84,7 @@ void GameEngine::Run() {
                     fprintf(stderr, "WARNING: Player was not found.\n");
                 }
                 else {
-                    player->HandleKeyEvent(context, keyPressed->unicode);
+                    player->HandleKeyEvent(&context, keyPressed->unicode);
                 }
             }
         }
@@ -111,7 +111,7 @@ void GameEngine::Run() {
         // 5. Late updates
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
-            obj->LateUpdate(context);
+            obj->LateUpdate(&context);
         }
 
         // Clear window
