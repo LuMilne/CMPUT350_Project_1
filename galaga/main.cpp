@@ -113,7 +113,7 @@ std::mt19937 Ball::gen(rd());
 
 int main()
 {
-    bool mBallSsample = true;
+    bool mBallSsample = false;
 
     if (mBallSsample)
     {
@@ -133,6 +133,7 @@ int main()
             auto enemy = std::make_shared<Enemy>(CMPUT350::Point2D(100 + x * 200, 100));
             engine.AddGameObject(enemy);
         }
+        //std::cout << "Running Galaga...\n";
         engine.Run();
     }
     return 0;

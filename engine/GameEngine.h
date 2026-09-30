@@ -39,7 +39,6 @@ private:
     GameContext context;
     std::vector<std::shared_ptr<GameObject>> activeObjects;
     std::vector<std::shared_ptr<GameObject>> incomingObjects;
-    sf::Event* event;
 };
 
 }  // namespace CMPUT350

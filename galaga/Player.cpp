@@ -11,6 +11,7 @@ Player::Player(CMPUT350::Point2D loc)
 
 void Player::Initialize(CMPUT350::GameContext* context)
 {
+
 }
 
 void Player::Update(CMPUT350::GameContext* context)
@@ -29,6 +30,7 @@ void Player::Update(CMPUT350::GameContext* context)
 
 void Player::LateUpdate(CMPUT350::GameContext* context)
 {
+    std::cout << "(" << player_position.x << ',' << player_position.y << ")\n";
 }
 
 bool Player::HandleKeyEvent(CMPUT350::GameContext* context, char key)

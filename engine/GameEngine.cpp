@@ -47,6 +47,8 @@ void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
 void GameEngine::Run() {
     while (true)  // window is open
     {
+//        std::cout << "Loop start\n";
+//        std::cout << "0? ";
         // 0. Remove any objects that are now dead
         for( auto i = activeObjects.begin(); i != activeObjects.end(); /*No default iteration*/) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
@@ -54,7 +56,9 @@ void GameEngine::Run() {
             }
             else i++;
         }
+//        std::cout << "0. ";
 
+//        std::cout << "1? ";
         // 1. Activate and initialize any objects added during the last frame
         while( !incomingObjects.empty() ) {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
@@ -65,44 +69,52 @@ void GameEngine::Run() {
             assert(incomingObjects.back() == nullptr);
             incomingObjects.pop_back();
         }
+//        std::cout << "1. ";
 
+//        std::cout << "2? ";
         // 2. Process events
-        if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>())
+        //auto* temp = event->getIf<sf::Event::KeyPressed>();
+        if (std::optional<sf::Event> event = mWindow->pollEvent())
         {
-             // Pass player input events to player
-            if (keyPressed->unicode == 'a' || keyPressed->unicode == 'd' || keyPressed->unicode == ' ') {
-/*
-                // Get player
-                std::shared_ptr<GameObject> player;
-                for( auto obj : activeObjects ) {
-                    if( typeid(obj.get()) == typeid(Player) ) {
-                        player = obj;
+            if(event->getIf<sf::Event::Closed>()) {
+                mWindow->close();
+            }
+            if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {
+                // Pass player input events to player
+                char cmd = 'l';
+                switch(keyPressed->code) {
+                    case sf::Keyboard::Key::A:
+                        cmd = 'a'; break;
+                    case sf::Keyboard::Key::D:
+                        cmd = 'd'; break;
+                    case sf::Keyboard::Key::Space:
+                        cmd = ' '; break;
+                    default:
                         break;
-                    }
-                }
-                // Check for player collection
-                if (player.get() == nullptr) { 
-                    fprintf(stderr, "WARNING: Player was not found.\n");
-                }
-                else {
-                    player->HandleKeyEvent(&context, keyPressed->unicode);
-                }
-*/
-                for( auto obj : activeObjects ) {
-                    if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
-                        if(sub != nullptr) {sub->HandleKeyEvent(&context,keyPressed->unicode);} // Pass key pressed to Player to handle response
+                };
+                std::cout << "switched...\n";
+
+                if( cmd != 'l' ) {
+                    for( auto obj : activeObjects ) {
+                        if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
+                            if(sub != nullptr) {sub->HandleKeyEvent(&context,cmd);} // Pass key pressed to Player to handle response
+                        }
                     }
                 }
             }
 
         }
+//        std::cout << "2. ";
 
 
         // 3. Update game objects
+//        std::cout << "3? ";
         for( auto obj : activeObjects ) {
             obj->Update(&context);                  // TODO: Figure out GameContext
         }
+//        std::cout << "3. ";
 
+//        std::cout << "4?. ";
         // 4. Process collision events
         /* Example Code from Project1a doc
         std::shared_ptr<CollisionObject> objA = std::dynamic_pointer_cast<CollisionObject>(mGameObjects[a]);
@@ -115,35 +127,44 @@ void GameEngine::Run() {
             Bullet --> Player (later project phase?)
             Enemy --> Player (later project phase)
         */
+//        std::cout << "4. ";
 
 
+//        std::cout << "5? ";
         // 5. Late updates
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
             obj->LateUpdate(&context);
         }
+//        std::cout << "5. ";
 
         // Clear window
         mWindow->resetGLStates();
 
         // 6. Render background
+//        std::cout << "6? ";
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
             if( auto sub = dynamic_cast<CMPUT350::GraphicsObject*>(obj.get()) ) {
                 sub->RenderBackground(&context);
             }
         }
+//        std::cout << "6. ";
 
         // 7. Render foreground
+//        std::cout << "7? ";
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
             if( auto sub = dynamic_cast<CMPUT350::GraphicsObject*>(obj.get()) ) {
                 sub->RenderForeground(&context);
             }
         }
+//        std::cout << "7.\n";
 
         // Actually render to window
         mWindow->display();
+        mWindow->clear();
+//        std::cout << "Loop end\n";
     }
 }
 
