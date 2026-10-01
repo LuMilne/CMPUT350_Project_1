@@ -17,7 +17,6 @@ bool CMPUT350::Bullet::IsPlayerBullet()
 
 void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
 {
-//    std::cout << "Bullet spawned at (" << loc.x << ',' << loc.y << ")\n";
 }
 
 void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
@@ -50,7 +49,6 @@ void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 
 void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
-    std::cout << "bullet: checking collision...\n";
     bounds = GetBounds();
     if (obj->GetBounds().IsInside(bounds.topLeft)) {
         Kill();

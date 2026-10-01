@@ -4,7 +4,6 @@
 
 Player::Player(CMPUT350::Point2D loc)
 {
-    // TODO: Update code
     player_position = loc;
     alive = true;
 }
@@ -27,7 +26,6 @@ void Player::Update(CMPUT350::GameContext* context)
 
 void Player::LateUpdate(CMPUT350::GameContext* context)
 {
-//    std::cout << "(" << player_position.x << ',' << player_position.y << ")\n";
 }
 
 bool Player::HandleKeyEvent(CMPUT350::GameContext* context, char key)
@@ -77,10 +75,6 @@ void Player::RenderBackground(CMPUT350::GameContext* context)
 
 void Player::RenderForeground(CMPUT350::GameContext* context)
 {
-    //bounds = GetBounds();
-    CMPUT350::Rect player_obj(player_position.x, player_position.y, player_width, player_height);
-    //context->ScreenContext->DrawRect(player_obj, colour);
-
     CMPUT350::Point2D pixel(player_position.x, player_position.y);
     context->ScreenContext->DrawRect(ShipPart(pixel, 5, 0, 1, 3), colour);
     context->ScreenContext->DrawRect(ShipPart(pixel, 2, 3, 1, 2), colour);
@@ -91,8 +85,6 @@ void Player::RenderForeground(CMPUT350::GameContext* context)
     context->ScreenContext->DrawRect(ShipPart(pixel, 10, 6, 1, 2), colour);
     context->ScreenContext->DrawRect(ShipPart(pixel, 0, 8, 11, 2), colour);
     context->ScreenContext->DrawRect(ShipPart(pixel, 2, 10, 7, 1), colour);
-
-
 }
 
 void Player::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
@@ -121,7 +113,6 @@ const CMPUT350::Rect& Player::GetBounds()
 
 void Player::SetPosition(const CMPUT350::Point2D current_position, const float new_velocity) {
     player_position.x = current_position.x + new_velocity;
-
 }
 
 CMPUT350::Rect& Player::ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h) {
@@ -134,5 +125,4 @@ CMPUT350::Rect& Player::ShipPart(CMPUT350::Point2D p, float px, float py, float 
 
     CMPUT350::Rect part(pixel, width, height);
     return part;
-
 }
