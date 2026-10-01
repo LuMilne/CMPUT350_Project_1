@@ -1,8 +1,8 @@
 #ifndef BULLET_H
 #define BULLET_H
 
-#include "CollisionObject.h"
-#include "GameContext.h"
+#include "../engine/CollisionObject.h"
+#include "../engine/GameContext.h"
 namespace CMPUT350 {
     class Bullet : public CMPUT350::CollisionObject
     {
