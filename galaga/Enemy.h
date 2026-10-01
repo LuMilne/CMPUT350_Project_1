@@ -1,8 +1,8 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "CollisionObject.h"
-#include "GameContext.h"
+#include "../engine/CollisionObject.h"
+#include "../engine/GameContext.h"
 
 class Enemy : public CMPUT350::CollisionObject
 {
