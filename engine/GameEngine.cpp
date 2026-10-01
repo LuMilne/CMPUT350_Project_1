@@ -51,7 +51,6 @@ void GameEngine::Run() {
     while (mWindow->isOpen())  // window is open
     {
         // 0. Remove any objects that are now dead
-        //std::cout << "active = " << activeObjects.size() << '\n'; 
         auto i = activeObjects.begin(); 
         while(  i != activeObjects.end() ) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
@@ -102,6 +101,7 @@ void GameEngine::Run() {
                     }
                 }
             }
+
             if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
                 // Pass player input events to player
                 char cmd = 'l';
@@ -113,6 +113,7 @@ void GameEngine::Run() {
                     default:
                         break;
                 };
+
                 if( cmd != 'l' ) {
                     for( auto obj : activeObjects ) {
                         if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
@@ -123,17 +124,11 @@ void GameEngine::Run() {
             }
 
         }
-//        std::cout << "2. ";
-
 
         // 3. Update game objects
-//        std::cout << "3? ";
         for( auto obj : activeObjects ) {
-            obj->Update(&context);                  // TODO: Figure out GameContext
+            obj->Update(&context);
         }
-//        std::cout << "3. ";
-
-//        std::cout << "4?. ";
         // 4. Process collision events
         // Bullet collisions
         for( auto obj : activeObjects ) {
@@ -153,54 +148,37 @@ void GameEngine::Run() {
                             }
                         }
                     }
-//                    std::cout << "found " << found << "enemies\n";
                 }
             }
         }
-       
-/*
-        Collision Events:
-            Bullet --> Enemy  (note: bullet object is source-independent. DON'T SHOOT YOURSELF)
-            Bullet --> Player (later project phase?)
-            Enemy --> Player (later project phase)
-*/
-//        std::cout << "4. ";
 
-
-//        std::cout << "5? ";
         // 5. Late updates
         for( auto obj : activeObjects ) {
             obj->LateUpdate(&context);
         }
-//        std::cout << "5. ";
 
         // Clear window
         mWindow->resetGLStates();
 
         // 6. Render background
-//        std::cout << "6? ";
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
             if( auto sub = dynamic_cast<CMPUT350::GraphicsObject*>(obj.get()) ) {
                 sub->RenderBackground(&context);
             }
         }
-//        std::cout << "6. ";
 
         // 7. Render foreground
-//        std::cout << "7? ";
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
             if( auto sub = dynamic_cast<CMPUT350::GraphicsObject*>(obj.get()) ) {
                 sub->RenderForeground(&context);
             }
         }
-//        std::cout << "7.\n";
 
         // Actually render to window
         mWindow->display();
         mWindow->clear();
-//        std::cout << "Loop end\n";
     }
 }
 }  // namespace CMPUT350

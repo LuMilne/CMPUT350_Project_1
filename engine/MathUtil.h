@@ -194,6 +194,7 @@ struct Rect {
         topLeft = Point2D(left, top);
         return *this;
     }
+    //Think like the middle of the ven diagram
     Rect &operator&=(const Rect &other) {
         float left = std::max(topLeft.x, other.topLeft.x);
         float top= std::max(topLeft.y, other.topLeft.y);

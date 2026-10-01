@@ -106,7 +106,7 @@ private:
 };
 
 // Shared randoms across all balls
-// These are the actual objeects associated with the class. Normally these
+// These are the actual objects associated with the class. Normally these
 // would be in a C++ file
 std::random_device Ball::rd;
 std::mt19937 Ball::gen(rd());
@@ -135,7 +135,6 @@ int main()
                 engine.AddGameObject(enemy);
             }
         }
-        //std::cout << "Running Galaga...\n";
         engine.Run();
     }
     return 0;
