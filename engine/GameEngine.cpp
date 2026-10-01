@@ -59,8 +59,6 @@ void GameEngine::Run() {
             else {i++;}
         }
 
-
-
         // 1. Activate and initialize any objects added during the last frame
         while( !incomingObjects.empty() ) {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
