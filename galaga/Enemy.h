@@ -30,8 +30,8 @@ private:
     bool alive;
     CMPUT350::Point2D enemy_position;
     std::string_view tag = "Enemy";
-    float enemy_height = 30;
-    float enemy_width = 35;
+    float enemy_height = 10;
+    float enemy_width = 12;
     CMPUT350::Rect bounds;
     CMPUT350::RGBColor colour = CMPUT350::Colors::red;
 };
