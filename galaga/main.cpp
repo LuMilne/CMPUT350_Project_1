@@ -128,10 +128,12 @@ int main()
         auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
         engine.AddGameObject(player);
         engine.AddGameObject(std::make_shared<Stars>(250, CMPUT350::Rect(0, 0, 768, 1024)));
-        for (int x = 0; x < 4; x++)
+        for (int row = 0; row < 5; row++)
         {
-            auto enemy = std::make_shared<Enemy>(CMPUT350::Point2D(100 + x * 200, 100));
-            engine.AddGameObject(enemy);
+            for(int col = 0; col < 8; col++) {
+                auto enemy = std::make_shared<Enemy>(CMPUT350::Point2D((40+653/7*col), (100*row+1)+50));
+                engine.AddGameObject(enemy);
+            }
         }
         //std::cout << "Running Galaga...\n";
         engine.Run();
