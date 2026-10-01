@@ -69,12 +69,18 @@ void GameEngine::Run() {
             assert(incomingObjects.back() == nullptr);
             incomingObjects.pop_back();
         }
+
         // 2. Process events
+
+        // AI Usage: Microsoft Copilot
+        // Date: 09/30/2026, 7:50pm
+        // Prompt: "why does program stop responding after closing window with mouse"
+        // Implementation: converted step-2 base if-loop to while-loop to clear queued events and prevent slowdown. Also added a while loop to clear residual events after close event is triggered.
         while (std::optional<sf::Event> event = mWindow->pollEvent())
         {
             if(event->is<sf::Event::Closed>()) {
                 mWindow->close();
-                while(mWindow->pollEvent()) {} // Clear any remaining events in the queue
+                while(mWindow->pollEvent()) {} // Implemented from AI request documented above
                 return;
             }
             if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {    // Keypress controls for Player
