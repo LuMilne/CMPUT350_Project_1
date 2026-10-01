@@ -4,6 +4,8 @@
 /// @brief
 #include "FontData.h"
 #include "../galaga/Player.h"
+#include "../galaga/Bullet.h"
+#include "../galaga/Enemy.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
@@ -95,6 +97,18 @@ void GameEngine::Run() {
                         cmd = ' '; break;
                     case sf::Keyboard::Key::Escape:
                         mWindow->close(); break;
+/*
+                    case sf::Keyboard::Key::T:  // Test for collision and kill;
+                        for(auto obj : activeObjects) {
+                            if( auto sub = dynamic_cast<Enemy*>(obj.get()) ) {
+                                auto b = sub->GetBounds();
+                                auto e = Enemy({b.topLeft.x,b.topLeft.y});
+                                sub->CollisionEnter(std::make_shared<CMPUT350::CollisionObject>(e));
+                                break;
+                            }
+                        }
+                        break;
+*/
                     default:
                         break;
                 };
@@ -145,19 +159,42 @@ void GameEngine::Run() {
         if (objA == nullptr)
             continue; // Not a collision object, skip
         */
-        /*
+        // Bullet collisions
+        for( auto obj : activeObjects ) {
+            // Filter for Bullet subclasses
+            if(auto bul = dynamic_cast<Bullet*>(obj.get()) ) {
+                std::cout << "bullet found\n";
+                // For each bullet, check if it is Player bullet
+                if(bul->IsPlayerBullet()) {
+                    // Check for collision with each enemy
+                    int found = 0;
+                    for( auto chk : activeObjects ) {
+                        if(auto enm = dynamic_cast<Enemy*>(chk.get())) {
+                            found++;
+                            enm->CollisionEnter(std::dynamic_pointer_cast<CMPUT350::CollisionObject>(obj));
+                            if(!chk->IsAlive()) {   // If collision is detected, kill both and escape search instance
+                                chk->Kill();
+                                //break;
+                            }
+                        }
+                    }
+                    std::cout << "found " << found << "enemies\n";
+                }
+            }
+        }
+       
+/*
         Collision Events:
             Bullet --> Enemy  (note: bullet object is source-independent. DON'T SHOOT YOURSELF)
             Bullet --> Player (later project phase?)
             Enemy --> Player (later project phase)
-        */
+*/
 //        std::cout << "4. ";
 
 
 //        std::cout << "5? ";
         // 5. Late updates
         for( auto obj : activeObjects ) {
-            // Filter for GraphicsObject subclasses
             obj->LateUpdate(&context);
         }
 //        std::cout << "5. ";

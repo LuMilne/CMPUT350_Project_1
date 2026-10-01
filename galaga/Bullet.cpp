@@ -46,12 +46,14 @@ void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
     context->ScreenContext->DrawLine(top_Point, loc, 5.f, colour);
+    context->ScreenContext->DrawRect(bounds, RGBColor(Colors::cyan));
 }
 
 void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
+    std::cout << "bullet: checking collision...\n";
     bounds = GetBounds();
-    if (bounds.IsInside(obj->GetBounds().topLeft)) {
+    if (obj->GetBounds().IsInside(bounds.topLeft)) {
         Kill();
     }
 }
