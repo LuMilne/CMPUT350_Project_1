@@ -168,11 +168,12 @@ void GameEngine::Run() {
                     // Check for collision with each enemy
                     int found = 0;
                     for( auto chk : activeObjects ) {
-                        if(auto enm = dynamic_cast<Enemy*>(chk.get())) {
+                        auto enm = dynamic_cast<Enemy*>(chk.get());
+                        if(enm != nullptr && chk->IsAlive()) {
                             found++;
                             enm->CollisionEnter(std::dynamic_pointer_cast<CMPUT350::CollisionObject>(obj));
-                            if(!chk->IsAlive()) {   // If collision is detected, kill both and escape search instance
-                                chk->Kill();
+                            if(!enm->IsAlive()) {   // If collision is detected, kill both and escape search instance
+                                bul->Kill();
                             }
                         }
                     }
