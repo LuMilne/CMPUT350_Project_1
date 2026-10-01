@@ -163,7 +163,6 @@ void GameEngine::Run() {
         for( auto obj : activeObjects ) {
             // Filter for Bullet subclasses
             if(auto bul = dynamic_cast<Bullet*>(obj.get()) ) {
-                std::cout << "bullet found\n";
                 // For each bullet, check if it is Player bullet
                 if(bul->IsPlayerBullet()) {
                     // Check for collision with each enemy
@@ -174,11 +173,10 @@ void GameEngine::Run() {
                             enm->CollisionEnter(std::dynamic_pointer_cast<CMPUT350::CollisionObject>(obj));
                             if(!chk->IsAlive()) {   // If collision is detected, kill both and escape search instance
                                 chk->Kill();
-                                //break;
                             }
                         }
                     }
-                    std::cout << "found " << found << "enemies\n";
+//                    std::cout << "found " << found << "enemies\n";
                 }
             }
         }

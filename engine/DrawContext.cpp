@@ -21,7 +21,7 @@ void DrawContext::DrawRect(Rect r, RGBColor c) {
     sf::RectangleShape rect({r.width, r.height});
     rect.setFillColor(sf::Color(c.r, c.g, c.b));
     //rect.setOrigin({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
-    rect.setPosition({r.topLeft.x + r.width/2, r.topLeft.y + r.height/2});
+    rect.setPosition({r.topLeft.x, r.topLeft.y});
     mWindow->draw(rect);
 }
 
@@ -44,7 +44,7 @@ void DrawContext::DrawLine(Point2D from, Point2D to, float width, RGBColor c) {
     float length = std::abs(to.y - from.y);
 
     sf::RectangleShape rect({width, length});
-    rect.setPosition({from.x - width/2, top_point});
+    rect.setPosition({from.x, top_point});
     rect.setFillColor(sf::Color(c.r, c.g, c.b));
     mWindow->draw(rect);
 }
