@@ -90,7 +90,7 @@ void Player::RenderForeground(CMPUT350::GameContext* context)
     context->ScreenContext->DrawRect(ShipPart(pixel, 2, 5, 7, 3), colour);
     context->ScreenContext->DrawRect(ShipPart(pixel, 10, 6, 1, 2), colour);
     context->ScreenContext->DrawRect(ShipPart(pixel, 0, 8, 11, 2), colour);
-    context->ScreenContext->DrawRect(ShipPart(pixel, 2, 10, 6, 1), colour);
+    context->ScreenContext->DrawRect(ShipPart(pixel, 2, 10, 7, 1), colour);
 
 
 }
