@@ -2,6 +2,7 @@
 
 ## Participants:
  - Lucas Milne: (LuMilne, lemilne, 1646921)
+ - Cooper Sobey: (CooperSobey, csobey, 1864399)
 
 ## AI Disclosure
 Detailed usage commented in "GameEngine.cpp" step 2 of Run().
