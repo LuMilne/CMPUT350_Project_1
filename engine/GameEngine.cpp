@@ -19,9 +19,10 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
         std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
-    /*if (!mFont->openFromMemory(&_font, _font_len)) {
+    mFont = std::make_shared<sf::Font>();
+    if (!mFont->openFromMemory(&_font, _font_len)) {
         fprintf(stderr, "WARNING: Font did not load.\n");
-    }*/
+    }
     // Set DrawContext using font
     canvas = DrawContext(mWindow, mFont);
     // Set GameContext using this and this.canvas
@@ -49,8 +50,6 @@ void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
 void GameEngine::Run() {
     while (mWindow->isOpen())  // window is open
     {
-//        std::cout << "Loop start\n";
-//        std::cout << "0? ";
         // 0. Remove any objects that are now dead
         //std::cout << "active = " << activeObjects.size() << '\n'; 
         auto i = activeObjects.begin(); 
@@ -61,9 +60,6 @@ void GameEngine::Run() {
             }
             else {i++;}
         }
-//        std::cout << "0. ";
-
-//        std::cout << "1? ";
         // 1. Activate and initialize any objects added during the last frame
         while( !incomingObjects.empty() ) {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
@@ -74,16 +70,13 @@ void GameEngine::Run() {
             assert(incomingObjects.back() == nullptr);
             incomingObjects.pop_back();
         }
-//        std::cout << "1. ";
-
-//        std::cout << "2? ";
         // 2. Process events
-        //auto* temp = event->getIf<sf::Event::KeyPressed>();
-        if (std::optional<sf::Event> event = mWindow->pollEvent())
+        while (std::optional<sf::Event> event = mWindow->pollEvent())
         {
             if(event->is<sf::Event::Closed>()) {
-                std::cout << "closing...\n";
                 mWindow->close();
+                while(mWindow->pollEvent()) {} // Clear any remaining events in the queue
+                return;
             }
             if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {    // Keypress controls for Player
                 // Pass player input events to player
@@ -97,18 +90,6 @@ void GameEngine::Run() {
                         cmd = ' '; break;
                     case sf::Keyboard::Key::Escape:
                         mWindow->close(); break;
-/*
-                    case sf::Keyboard::Key::T:  // Test for collision and kill;
-                        for(auto obj : activeObjects) {
-                            if( auto sub = dynamic_cast<Enemy*>(obj.get()) ) {
-                                auto b = sub->GetBounds();
-                                auto e = Enemy({b.topLeft.x,b.topLeft.y});
-                                sub->CollisionEnter(std::make_shared<CMPUT350::CollisionObject>(e));
-                                break;
-                            }
-                        }
-                        break;
-*/
                     default:
                         break;
                 };
@@ -154,11 +135,6 @@ void GameEngine::Run() {
 
 //        std::cout << "4?. ";
         // 4. Process collision events
-        /* Example Code from Project1a doc
-        std::shared_ptr<CollisionObject> objA = std::dynamic_pointer_cast<CollisionObject>(mGameObjects[a]);
-        if (objA == nullptr)
-            continue; // Not a collision object, skip
-        */
         // Bullet collisions
         for( auto obj : activeObjects ) {
             // Filter for Bullet subclasses
@@ -227,24 +203,4 @@ void GameEngine::Run() {
 //        std::cout << "Loop end\n";
     }
 }
-
-// Sample code for processing events
-
-// bool GameEngine::ProcessEvents(GameContext *context)
-//{
-//	while (const std::optional event = mWindow->pollEvent())
-//	{
-//		if (event->is<sf::Event::Closed>())
-//		{
-//		}
-//		else if (event->is<sf::Event::Resized>())
-//		{
-//		}
-//		else if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>())
-//		{
-//			// use keyPressed->unicode to get character
-//		}
-//	}
-// }
-
 }  // namespace CMPUT350
