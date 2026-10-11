@@ -27,7 +27,7 @@ public:
     void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
     const CMPUT350::Rect& GetBounds() override;
 
-    CMPUT350::Rect& ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h);
+    CMPUT350::Rect ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h);
 
 private:
     //Negative left, Positive Right

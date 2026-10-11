@@ -160,8 +160,8 @@ struct Rect {
     Rect &operator|=(const Rect &other) {
         float left = std::min(topLeft.x, other.topLeft.x);
         float top= std::min(topLeft.y, other.topLeft.y);
-        float right = std::max(topLeft.x + width, other.topLeft.x + width);
-        float bottom = std::max(topLeft.y + height, other.topLeft.y + height);
+        float right = std::max(topLeft.x + width, other.topLeft.x + other.width);
+        float bottom = std::max(topLeft.y + height, other.topLeft.y + other.height);
 
         width = right - left;
         height = bottom - top;
@@ -198,8 +198,8 @@ struct Rect {
     Rect &operator&=(const Rect &other) {
         float left = std::max(topLeft.x, other.topLeft.x);
         float top= std::max(topLeft.y, other.topLeft.y);
-        float right = std::min(topLeft.x + width, other.topLeft.x + width);
-        float bottom = std::min(topLeft.y + height, other.topLeft.y + height);
+        float right = std::min(topLeft.x + width, other.topLeft.x + other.width);
+        float bottom = std::min(topLeft.y + height, other.topLeft.y + other.height);
 
         width = right - left;
         height = bottom - top;

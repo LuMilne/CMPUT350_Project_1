@@ -115,14 +115,14 @@ void Player::SetPosition(const CMPUT350::Point2D current_position, const float n
     player_position.x = current_position.x + new_velocity;
 }
 
-CMPUT350::Rect& Player::ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h) {
+CMPUT350::Rect Player::ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h) {
     float pixel_x = 4 * px;
     float pixel_y = 4 * py;
     CMPUT350::Point2D pixel(p.x + pixel_x, p.y + pixel_y);
 
-    float height = 4 * h;
-    float width = 4 * w;
+    int height = 4 * h;
+    int width = 4 * w;
 
-    CMPUT350::Rect part(pixel, width, height);
-    return part;
+
+    return {pixel, width, height};;
 }
