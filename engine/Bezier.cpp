@@ -7,11 +7,11 @@
 #include <cmath>
 namespace CMPUT350 {
 
-Bezier::Bezier(const std::vector<CMPUT350::Point2D> &pts) : pts(pts) {
+Bezier::Bezier(const std::vector<Point2D> &pts) : pts(pts) {
 
 }
 
-void FindSeg(size_t pt_count, float &t, int &idx) {
+static void FindSeg(size_t pt_count, float &t, int &idx) {
     size_t seg_count = (pt_count - 1) / 3;
     int cur_seg = static_cast<int>(std::floor(t));
     if (cur_seg == seg_count) {

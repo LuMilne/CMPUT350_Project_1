@@ -1,5 +1,7 @@
 #include "DrawContext.h"
 
+#include <cmath>
+
 namespace CMPUT350 {
 
 DrawContext::DrawContext(std::shared_ptr<sf::RenderWindow> window, std::shared_ptr<sf::Font> font)
@@ -51,5 +53,48 @@ void DrawContext::DrawLine(Point2D from, Point2D to, float width, RGBColor c) {
 int DrawContext::GetWindowWidth() { return mWindow->getSize().x; }
 
 int DrawContext::GetWindowHeight() { return mWindow->getSize().y; }
+
+void DrawContext::SetContextOffset(Point2D p) {
+    offset = p;
+}
+
+void DrawContext::SetContextRotation(float rot) {
+    rotation = rot;
+}
+
+Point2D DrawContext::Transform(Point2D p) {
+    const Point2D x_transformed(std::cos(rotation), -std::sin(rotation));
+    const Point2D y_transformed(std::sin(rotation), std::cos(rotation));
+
+    Point2D result(x_transformed.Dot(p), y_transformed.Dot(p));
+    return result + offset;
+}
+
+Point2D DrawContext::ReverseTransform(Point2D p) {
+    p -= offset;
+    const Point2D x_transformed(std::cos(rotation), std::sin(rotation));
+    const Point2D y_transformed(-std::sin(rotation), std::cos(rotation));
+    Point2D result(x_transformed.Dot(p), y_transformed.Dot(p));
+
+    return result;
+}
+
+// Rotates rectangle and computes new bounding box after rotation
+Rect DrawContext::Transform(Rect r) {
+    //Transform all 4 points and then build the bounding box
+    Point2D tl_point = Transform(r.topLeft);
+    Point2D bl_point = Transform(Point2D(r.topLeft.x, r.topLeft.y + r.height));
+    Point2D tr_point = Transform(Point2D(r.topLeft.x + r.width, r.topLeft.y));
+    Point2D br_point = Transform(Point2D(r.topLeft.x + r.width, r.topLeft.y + r.height));
+
+    //Makes a new rectangle of the transformed points
+    Rect transformed(tl_point, br_point);
+
+    //Ensures that we have all 4 corners in box
+    transformed |= bl_point;
+    transformed |= tr_point;
+
+    return transformed;
+}
 
 }  // namespace CMPUT350
