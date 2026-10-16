@@ -9,7 +9,9 @@ set(CMAKE_EXPORT_COMPILE_COMMANDS ON)
 add_subdirectory(engine)
 add_subdirectory(galaga)
 
-add_executable(${PROJECT_NAME} ${GALAGA})
+add_executable(${PROJECT_NAME} ${GALAGA}
+        galaga/Enemies.cpp
+        galaga/Enemies.h)
 target_compile_features(${PROJECT_NAME} PRIVATE cxx_std_20)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/engine/)
 target_include_directories(${PROJECT_NAME} PRIVATE ${CMAKE_CURRENT_SOURCE_DIR}/galaga/)
