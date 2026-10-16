@@ -3,6 +3,7 @@
 //
 
 #include "NotificationManager.h"
+#include "GameObject.h"
 namespace CMPUT350 {
 void NotificationManager::Register(std::weak_ptr<GameObject> object, const std::string& key) {
     mListeners[key].push_back(object);
@@ -50,5 +51,16 @@ void NotificationManager::Notify(const std::string& message) {
      *  fly down: Might have multiple depending on enemy type if we need to
      *  points: For scoring points, may need multiple values. i.e. points 200, points 550
      */
+
+    // Get iterator to objects listening for the message
+    auto targets = mListeners[message];
+
+    // Send event to each object
+    for( auto it = targets.begin(); it != targets.end(); it++ ) {
+        if( auto obj = it->lock() ) { // get object from the weak_ptr
+            obj->ReceiveNotification(message);
+        }
+    }
+    
 }
 }

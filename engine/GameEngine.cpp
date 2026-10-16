@@ -34,17 +34,17 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
 
     // Default keybindings
     keyPressEvents = {
-        {(int) sf::Keyboard::Scan::Left, "MoveLeft"},
-        {(int) sf::Keyboard::Scan::A, "MoveLeft"},
-        {(int) sf::Keyboard::Scan::Right, "MoveRight"},
-        {(int) sf::Keyboard::Scan::D, "MoveRight"},
-        {(int) sf::Keyboard::Scan::Space, "Shoot"}
+        {(int) sf::Keyboard::Scan::Left,    "left"},
+        {(int) sf::Keyboard::Scan::A,       "left"},
+        {(int) sf::Keyboard::Scan::Right,   "right"},
+        {(int) sf::Keyboard::Scan::D,       "right"},
+        {(int) sf::Keyboard::Scan::Space,   "shoot"}
     };
     keyReleaseEvents = {
-        {(int) sf::Keyboard::Scan::Left, "Stop"},
-        {(int) sf::Keyboard::Scan::A, "Stop"},
-        {(int) sf::Keyboard::Scan::Right, "Stop"},
-        {(int) sf::Keyboard::Scan::D, "Stop"},
+        {(int) sf::Keyboard::Scan::Left,    "stop"},
+        {(int) sf::Keyboard::Scan::A,       "stop"},
+        {(int) sf::Keyboard::Scan::Right,   "stop"},
+        {(int) sf::Keyboard::Scan::D,       "stop"},
     };
 }
 
