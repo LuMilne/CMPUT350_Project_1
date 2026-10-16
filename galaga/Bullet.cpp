@@ -1,56 +1,77 @@
 #include "Bullet.h"
 
-Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player)
+CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player)
+{
+    is_player = player;
+    alive = true;
+    loc = location;
+    head = heading;
+    velocity = head.y * 20;
+    top_Point = loc;
+}
+
+bool CMPUT350::Bullet::IsPlayerBullet()
+{
+    return is_player;
+}
+
+void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
 {
 }
 
-bool Bullet::IsPlayerBullet()
+void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
 {
-    // TODO: Update
-    return true;
+    loc.y += velocity;
+    top_Point.y = loc.y + 50;
+    if (loc.y + 10 < 0) {
+        Kill();
+    }
+    bounds = GetBounds();
 }
 
-void Bullet::Initialize(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::LateUpdate(CMPUT350::GameContext* context)
 {
 }
+void CMPUT350::Bullet::ReceiveNotification(const std::string& key) {
 
-void Bullet::Update(CMPUT350::GameContext* context)
-{
 }
 
-void Bullet::LateUpdate(CMPUT350::GameContext* context)
-{
-}
+// bool CMPUT350::Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
+// {
+//     return false;
+// }
 
-bool Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
-{
-}
-
-void Bullet::RenderBackground(CMPUT350::GameContext* context)
-{
-}
-
-void Bullet::RenderForeground(CMPUT350::GameContext* context)
+void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 {
 }
 
-void Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
+void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
+    context->ScreenContext->DrawLine(top_Point, loc, 5.f, colour);
 }
 
-void Bullet::Kill()
+void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
+    bounds = GetBounds();
+    if (obj->GetBounds().IsInside(bounds.topLeft)) {
+        Kill();
+    }
 }
 
-bool Bullet::IsAlive() const
+void CMPUT350::Bullet::Kill()
+{
+    alive = false;
+}
+
+bool CMPUT350::Bullet::IsAlive() const
 {
     // TODO: Update code
-    return true;
+    return alive;
 }
 
-const CMPUT350::Rect& Bullet::GetBounds()
+const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
 {
     // TODO: Update code
-    static CMPUT350::Rect sBounds(0, 0, 0, 0);
-    return sBounds;
+    bounds = Rect(loc.x, loc.y, 5, 10);
+    return bounds;
 }

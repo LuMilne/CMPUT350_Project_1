@@ -1,25 +1,49 @@
 #include "GameEngine.h"
+#include "GameContext.h"
+
+/// @brief
 #include "FontData.h"
+#include "../galaga/Player.h"
+#include "../galaga/Bullet.h"
+#include "../galaga/Enemy.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
-#include "../galaga/Player.h"
-
-/// @brief
+#include "GraphicsObject.h"
 namespace CMPUT350 {
 
+    // Initialize Engine
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
-        : mWindow(std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name)),
-            canvas(mWindow, mFont) {
+    : canvas(mWindow, mFont) {
     // Create game window
+    mWindow =
+        std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
+    mFont = std::make_shared<sf::Font>();
     if (!mFont->openFromMemory(&_font, _font_len)) {
-    	fprintf(stderr, "WARNING: Font did not load.\n");
+        fprintf(stderr, "WARNING: Font did not load.\n");
     }
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
     context.ScreenContext = &canvas;
+
+    // Project 1b additions, lemilne 10-16-2026
+
+    // Default keybindings
+    keyPressEvents = {
+        {(int) sf::Keyboard::Scan::Left,    "left"},
+        {(int) sf::Keyboard::Scan::A,       "left"},
+        {(int) sf::Keyboard::Scan::Right,   "right"},
+        {(int) sf::Keyboard::Scan::D,       "right"},
+        {(int) sf::Keyboard::Scan::Space,   "shoot"}
+    };
+    keyReleaseEvents = {
+        {(int) sf::Keyboard::Scan::Left,    "stop"},
+        {(int) sf::Keyboard::Scan::A,       "stop"},
+        {(int) sf::Keyboard::Scan::Right,   "stop"},
+        {(int) sf::Keyboard::Scan::D,       "stop"},
+    };
 }
 
 GameEngine::~GameEngine() {
@@ -33,6 +57,20 @@ void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
     incomingObjects.push_back(gameObject);
 }
 
+//
+// Project 1b function additions
+// created by lemilne 10-16-2026
+//
+
+// Associate keypress scancode with event for NotificationManager
+void GameEngine::InstallKeyDownNotification(int scanCode,  const std::string &notification) {
+    keyPressEvents[scanCode] = notification;    // SFML keyboard scancodes are enums and can be passed as integers
+}
+// Associate keyrelease scancode with event for NotificationManager
+void GameEngine::InstallKeyUpNotification(int scanCode,  const std::string &notification) {
+    keyReleaseEvents[scanCode] = notification;
+}
+
 /**
  * @method Run
  * @arguments None
@@ -40,16 +78,17 @@ void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
  * all objects have been destroyed.
  */
 void GameEngine::Run() {
-    while (true)  // window is open
+    while (mWindow->isOpen())  // window is open
     {
         // 0. Remove any objects that are now dead
-        for( auto i = activeObjects.begin(); i != activeObjects.end(); /*No default iteration*/) {
+        auto i = activeObjects.begin(); 
+        while(  i != activeObjects.end() ) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
                 activeObjects.erase(i);
+                i = activeObjects.begin();  // Inefficient navigation of vector, but bug free. Maybe fix later.
             }
-            else i++;
+            else {i++;}
         }
-
         // 1. Activate and initialize any objects added during the last frame
         while( !incomingObjects.empty() ) {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
@@ -62,50 +101,65 @@ void GameEngine::Run() {
         }
 
         // 2. Process events
-        if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>())
+
+        // AI Usage: Microsoft Copilot
+        // Date: 09/30/2026, 7:50pm
+        // Prompt: "why does program stop responding after closing window with mouse"
+        // Implementation: converted step-2 base if-loop to while-loop to clear queued events and prevent slowdown. Also added a while loop to clear residual events after close event is triggered.
+        while (std::optional<sf::Event> event = mWindow->pollEvent())
         {
-             // Pass player input events to player
-            if (keyPressed->unicode == 'a' || keyPressed->unicode == 'd' || keyPressed->unicode == ' ') {
-                // Get player
-                std::shared_ptr<GameObject> player;
-                for( auto obj : activeObjects ) {
-                    if( typeid(obj.get()) == typeid(Player) ) {
-                        player = obj;
-                        break;
+            if(event->is<sf::Event::Closed>()) {
+                mWindow->close();
+                while(mWindow->pollEvent()) {} // Implemented from AI request documented above
+                return;
+            }
+            if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {    // Keypress controls for Player
+                int code = (int)keyPressed->scancode;
+                // Check GameEngine map for keypress events associated with the scancode and pass to NotificationManager
+                if(keyPressEvents.contains(code)) {
+                    context.mNotificationManager->Notify(keyPressEvents.at(code));
+                }
+            }
+
+            if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
+                int code = (int)keyReleased->scancode;
+                // Check GameEngine map for keypress events associated with the scancode and pass to NotificationManager
+                if(keyReleaseEvents.contains(code)) {
+                    context.mNotificationManager->Notify(keyReleaseEvents.at(code));
+                }
+            }
+
+        }
+
+        // 3. Update game objects
+        for( auto obj : activeObjects ) {
+            obj->Update(&context);
+        }
+        // 4. Process collision events
+        // Bullet collisions
+        for( auto obj : activeObjects ) {
+            // Filter for Bullet subclasses
+            if(auto bul = dynamic_cast<Bullet*>(obj.get()) ) {
+                // For each bullet, check if it is Player bullet
+                if(bul->IsPlayerBullet()) {
+                    // Check for collision with each enemy
+                    int found = 0;
+                    for( auto chk : activeObjects ) {
+                        auto enm = dynamic_cast<Enemy*>(chk.get());
+                        if(enm != nullptr && chk->IsAlive()) {
+                            found++;
+                            enm->CollisionEnter(std::dynamic_pointer_cast<CMPUT350::CollisionObject>(obj));
+                            if(!enm->IsAlive()) {   // If collision is detected, kill both and escape search instance
+                                bul->Kill();
+                            }
+                        }
                     }
-                }
-                // Check for player collection
-                if (player.get() == nullptr) { 
-                    fprintf(stderr, "WARNING: Player was not found.\n");
-                }
-                else {
-                    player->HandleKeyEvent(&context, keyPressed->unicode);
                 }
             }
         }
 
-
-        // 3. Update game objects
-        for( auto obj : activeObjects ) {
-            obj->Update(&context);                  // TODO: Figure out GameContext
-        }
-
-        // 4. Process collision events
-        /* Example Code from Project1a doc
-        std::shared_ptr<CollisionObject> objA = std::dynamic_pointer_cast<CollisionObject>(mGameObjects[a]);
-        if (objA == nullptr)
-            continue; // Not a collision object, skip
-        */
-        /*
-        Collision Events:
-            Bullet --> Enemy  (note: bullet object is source-independent. DON'T SHOOT YOURSELF)
-            Bullet --> Player (later project phase?)
-            Enemy --> Player (later project phase)
-        */
-
         // 5. Late updates
         for( auto obj : activeObjects ) {
-            // Filter for GraphicsObject subclasses
             obj->LateUpdate(&context);
         }
 
@@ -130,26 +184,7 @@ void GameEngine::Run() {
 
         // Actually render to window
         mWindow->display();
+        mWindow->clear();
     }
 }
-
-// Sample code for processing events
-
-// bool GameEngine::ProcessEvents(GameContext *context)
-//{
-//	while (const std::optional event = mWindow->pollEvent())
-//	{
-//		if (event->is<sf::Event::Closed>())
-//		{
-//		}
-//		else if (event->is<sf::Event::Resized>())
-//		{
-//		}
-//		else if (const auto* keyPressed = event->getIf<sf::Event::TextEntered>())
-//		{
-//			// use keyPressed->unicode to get character
-//		}
-//	}
-// }
-
 }  // namespace CMPUT350

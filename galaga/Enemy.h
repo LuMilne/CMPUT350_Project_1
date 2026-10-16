@@ -1,21 +1,26 @@
 #ifndef ENEMY_H
 #define ENEMY_H
 
-#include "CollisionObject.h"
-#include "GameContext.h"
+#include "../engine/CollisionObject.h"
+#include "../engine/GameContext.h"
 
 class Enemy : public CMPUT350::CollisionObject
 {
 public:
     Enemy(CMPUT350::Point2D loc);
+    Enemy(CMPUT350::Point2D loc, const std::vector<CMPUT350::Point2D>& path);
 
     // GameObject Functions
     void Initialize(CMPUT350::GameContext* context) override;
     void Update(CMPUT350::GameContext* context) override;
     void LateUpdate(CMPUT350::GameContext* context) override;
     bool HandleKeyEvent(CMPUT350::GameContext* context, char key) override;
+    void ReceiveNotification(const std::string& key) override;
     bool IsAlive() const override;
     void Kill() override;
+
+    //Gunna have multiple enemy types
+    virtual bool Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) = 0;
 
     // Graphics Object Functions
     void RenderBackground(CMPUT350::GameContext* context) override;
@@ -25,6 +30,17 @@ public:
     // Collision Object Functions
     void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
     const CMPUT350::Rect& GetBounds() override;
+
+protected:
+    bool alive;
+    float velocity;
+    int health;
+    CMPUT350::Point2D enemy_position;
+    std::string_view tag = "Enemy";
+    float enemy_height = 30;
+    float enemy_width = 35;
+    CMPUT350::Rect bounds;
+    CMPUT350::RGBColor colour = CMPUT350::Colors::red;
 };
 
 

@@ -1,11 +1,15 @@
 #ifndef GAMEOBJECT_H
 #define GAMEOBJECT_H
+#include "GameContext.h"
+#include <string_view>
 
 namespace CMPUT350 {
-
+class Bullet;
 class GameContext;
 
 class GameObject {
+private:
+    bool alive = true;
 public:
     virtual ~GameObject() = default;
     virtual void Initialize(GameContext *context);
@@ -15,8 +19,8 @@ public:
     virtual bool HandleKeyEvent(GameContext *context, char key);
     virtual bool IsAlive() const;
     virtual void Kill();
+    virtual void ReceiveNotification(const std::string& key);
 };
-
 }  // namespace CMPUT350
 
 #endif  // GAMEOBJECT_H
