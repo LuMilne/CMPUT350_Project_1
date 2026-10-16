@@ -6,9 +6,8 @@ namespace CMPUT350 {
 class GameEngine;
 }
 
-#include "EngineView.h"
-#include "GameObject.h"
 #include "MathUtil.h"
+#include "GameContext.h"
 #include <SFML/Graphics.hpp>
 #include <SFML/Window/Event.hpp>
 #include <vector>

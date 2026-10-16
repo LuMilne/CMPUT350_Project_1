@@ -1,27 +1,25 @@
 #include "GameEngine.h"
-#include "GameContext.h"
-
-/// @brief
-namespace CMPUT350 {
 #include "FontData.h"
-#include "Player.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
+#include "../galaga/Player.h"
 
-GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name) {
+/// @brief
+namespace CMPUT350 {
+
+GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
+        : mWindow(std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name)),
+            canvas(mWindow, mFont) {
     // Create game window
-    mWindow = std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
     if (!mFont->openFromMemory(&_font, _font_len)) {
     	fprintf(stderr, "WARNING: Font did not load.\n");
     }
-    // Set DrawContext using font
-    canvas = DrawContext(mWindow, mFont);
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
-    context.ScreenContext = canvas;
+    context.ScreenContext = &canvas;
 }
 
 GameEngine::~GameEngine() {
@@ -81,7 +79,7 @@ void GameEngine::Run() {
                     fprintf(stderr, "WARNING: Player was not found.\n");
                 }
                 else {
-                    player->HandleKeyEvent(context, keyPressed->unicode);
+                    player->HandleKeyEvent(&context, keyPressed->unicode);
                 }
             }
         }
@@ -108,7 +106,7 @@ void GameEngine::Run() {
         // 5. Late updates
         for( auto obj : activeObjects ) {
             // Filter for GraphicsObject subclasses
-            obj->LateUpdate(context);
+            obj->LateUpdate(&context);
         }
 
         // Clear window
@@ -131,7 +129,7 @@ void GameEngine::Run() {
         }
 
         // Actually render to window
-        mWindow->draw(&context);
+        mWindow->display();
     }
 }
 
