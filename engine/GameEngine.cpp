@@ -101,10 +101,12 @@ void GameEngine::Run() {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
             // Time: 09/24/2026, 12:25pm
             // Referenced user quant's implementation of user David Schwartz' solution for passing shared_ptr between vectors
+            context.CurrObject = incomingObjects.back();    // Set initializing object as context.CurrObject for the duration
             incomingObjects.back()->Initialize(&context);
             activeObjects.push_back(std::move(incomingObjects.back()));
             assert(incomingObjects.back() == nullptr);
             incomingObjects.pop_back();
+            context.CurrObject.reset();
         }
 
         // 2. Process events
