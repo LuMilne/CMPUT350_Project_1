@@ -43,7 +43,7 @@ void Enemy1::LateUpdate(CMPUT350::GameContext *context) {
 
 }
 bool Enemy1::Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) {
-
+    return false;
 }
 void Enemy1::RenderForeground(CMPUT350::GameContext *context) {
 
@@ -58,10 +58,10 @@ void Enemy2::Initialize(CMPUT350::GameContext *context){
     health = 2;
 }
 void Enemy2::LateUpdate(CMPUT350::GameContext *context) {
-
+    
 }
 bool Enemy2::Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) {
-
+    return false;
 }
 void Enemy2::RenderForeground(CMPUT350::GameContext *context) {
 
@@ -79,7 +79,7 @@ void Enemy3::LateUpdate(CMPUT350::GameContext *context) {
 
 }
 bool Enemy3::Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) {
-
+    return false;
 }
 void Enemy3::RenderForeground(CMPUT350::GameContext *context) {
 

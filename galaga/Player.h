@@ -2,7 +2,7 @@
 #define PLAYER_H
 
 #include "../engine/CollisionObject.h"
-
+#include "../engine/GameContext.h"
 
 class Player : public CMPUT350::CollisionObject
 {
@@ -45,6 +45,8 @@ private:
     CMPUT350::Rect bounds;
     sf::RectangleShape rect;
     CMPUT350::RGBColor colour = CMPUT350::Colors::yellow;
+    // Project 1b additions
+    CMPUT350::GameContext* playerContext;
 };
 
 #endif

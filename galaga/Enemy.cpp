@@ -33,7 +33,7 @@ void Enemy::ReceiveNotification(const std::string& key) {
     }
 
     if (key == "enemy_shoot") {
-        Attack();
+        //Attack();
     }
 }
 
