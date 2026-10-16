@@ -12,6 +12,7 @@
 #include "GraphicsObject.h"
 namespace CMPUT350 {
 
+    // Initialize Engine
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
     : canvas(mWindow, mFont) {
     // Create game window
@@ -28,6 +29,23 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
     context.ScreenContext = &canvas;
+
+    // Project 1b additions, lemilne 10-16-2026
+
+    // Default keybindings
+    keyPressEvents = {
+        {(int) sf::Keyboard::Scan::Left, "MoveLeft"},
+        {(int) sf::Keyboard::Scan::A, "MoveLeft"},
+        {(int) sf::Keyboard::Scan::Right, "MoveRight"},
+        {(int) sf::Keyboard::Scan::D, "MoveRight"},
+        {(int) sf::Keyboard::Scan::Space, "Shoot"}
+    };
+    keyReleaseEvents = {
+        {(int) sf::Keyboard::Scan::Left, "Stop"},
+        {(int) sf::Keyboard::Scan::A, "Stop"},
+        {(int) sf::Keyboard::Scan::Right, "Stop"},
+        {(int) sf::Keyboard::Scan::D, "Stop"},
+    };
 }
 
 GameEngine::~GameEngine() {
@@ -39,6 +57,20 @@ GameEngine::~GameEngine() {
 
 void GameEngine::AddGameObject(std::shared_ptr<GameObject> gameObject) {
     incomingObjects.push_back(gameObject);
+}
+
+//
+// Project 1b function additions
+// created by lemilne 10-16-2026
+//
+
+// Associate keypress scancode with event for NotificationManager
+void GameEngine::InstallKeyDownNotification(int scanCode,  const std::string &notification) {
+    keyPressEvents[scanCode] = notification;    // SFML keyboard scancodes are enums and can be passed as integers
+}
+// Associate keyrelease scancode with event for NotificationManager
+void GameEngine::InstallKeyUpNotification(int scanCode,  const std::string &notification) {
+    keyReleaseEvents[scanCode] = notification;
 }
 
 /**
@@ -84,48 +116,18 @@ void GameEngine::Run() {
                 return;
             }
             if(const auto* keyPressed = event->getIf<sf::Event::KeyPressed>()) {    // Keypress controls for Player
-                // Pass player input events to player
-                char cmd = 'l';
-                switch(keyPressed->code) {
-                    case sf::Keyboard::Key::A:
-                        cmd = 'a'; break;
-                    case sf::Keyboard::Key::D:
-                        cmd = 'd'; break;
-                    case sf::Keyboard::Key::Space:
-                        cmd = ' '; break;
-                    case sf::Keyboard::Key::Escape:
-                        mWindow->close(); break;
-                    default:
-                        break;
-                };
-
-                if( cmd != 'l' ) {
-                    for( auto obj : activeObjects ) {
-                        if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
-                            if(sub != nullptr) {sub->HandleKeyEvent(&context,cmd);} // Pass key pressed to Player to handle response
-                        }
-                    }
+                int code = (int)keyPressed->scancode;
+                // Check GameEngine map for keypress events associated with the scancode and pass to NotificationManager
+                if(keyPressEvents.contains(code)) {
+                    context.mNotificationManager->Notify(keyPressEvents.at(code));
                 }
             }
 
             if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
-                // Pass player input events to player
-                char cmd = 'l';
-                switch(keyReleased->code) {
-                    case sf::Keyboard::Key::A:
-                        cmd = 'r'; break;
-                    case sf::Keyboard::Key::D:
-                        cmd = 'r'; break;
-                    default:
-                        break;
-                };
-
-                if( cmd != 'l' ) {
-                    for( auto obj : activeObjects ) {
-                        if( auto sub = dynamic_cast<Player*>(obj.get()) ) { // Get Player
-                            if(sub != nullptr) {sub->HandleKeyEvent(&context,cmd);} // Pass key released to Player to handle response
-                        }
-                    }
+                int code = (int)keyReleased->scancode;
+                // Check GameEngine map for keypress events associated with the scancode and pass to NotificationManager
+                if(keyReleaseEvents.contains(code)) {
+                    context.mNotificationManager->Notify(keyReleaseEvents.at(code));
                 }
             }
 

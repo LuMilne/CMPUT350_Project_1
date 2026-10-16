@@ -13,6 +13,7 @@ class GameEngine;
 #include <SFML/Window/Event.hpp>
 #include <vector>
 #include <memory>
+#include <unordered_map>
 
 namespace CMPUT350 {
 
@@ -29,6 +30,10 @@ public:
     GameEngine& operator=(GameEngine&&) = delete;       // Prevent move-assignment
 
     void AddGameObject(std::shared_ptr<GameObject> gameObject) override;
+    // int: scancode for keypress                                   (i.e. left arrowkey scancode = 75)
+    // string &notification: message sent to NotificationManager    (i.e. "MoveLeft")
+	virtual void InstallKeyDownNotification(int, const std::string &notification) override;
+	virtual void InstallKeyUpNotification(int, const std::string &notification) override;
 
     void Run();
 
@@ -39,6 +44,9 @@ private:
     GameContext context;
     std::vector<std::shared_ptr<GameObject>> activeObjects;
     std::vector<std::shared_ptr<GameObject>> incomingObjects;
+    // Project 1b element additions
+    std::unordered_map<int, std::string> keyPressEvents;
+    std::unordered_map<int, std::string> keyReleaseEvents;
 };
 
 }  // namespace CMPUT350
