@@ -8,6 +8,8 @@ class Bullet;
 class GameContext;
 
 class GameObject {
+private:
+    bool alive = true;
 public:
     virtual ~GameObject() = default;
     virtual void Initialize(GameContext *context);
