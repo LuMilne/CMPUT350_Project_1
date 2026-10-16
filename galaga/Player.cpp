@@ -28,6 +28,44 @@ void Player::LateUpdate(CMPUT350::GameContext* context)
 {
 }
 
+void Player::ReceiveNotification(const std::string& key) {
+    if (key == "left") {
+        velocity = -6;
+        return;
+    }
+    if (key == "right") {
+        velocity = 6;
+        return;
+    }
+
+    if (key == "shoot") {
+        if (bullet_one.expired()) {
+            auto heading = CMPUT350::Point2D(0, -1);
+            std::shared_ptr<CMPUT350::Bullet> new_bullet = std::make_shared<CMPUT350::Bullet>((player_position + 20.0f), heading, true);
+            bullet_one = new_bullet;
+            context->mEngineView->AddGameObject(new_bullet);
+            return;
+        }
+
+        if (bullet_two.expired()) {
+            auto heading = CMPUT350::Point2D(0, -1);
+            std::shared_ptr<CMPUT350::Bullet> new_bullet = std::make_shared<CMPUT350::Bullet>((player_position + 20.0f), heading, true);
+            bullet_two = new_bullet;
+            context->mEngineView->AddGameObject(new_bullet);
+            return;
+        }
+        return;
+    }
+
+    //I dont remember why we have this
+    if (key == "stop") {
+        velocity = 0;
+        return;
+    }
+
+    velocity = 0;
+}
+
 bool Player::HandleKeyEvent(CMPUT350::GameContext* context, char key)
 {
     if (key == 'a') {

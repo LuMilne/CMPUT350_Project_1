@@ -14,6 +14,7 @@ public:
     void SetPosition(CMPUT350::Point2D point2_d, float velocity);
     void Update(CMPUT350::GameContext* context) override;
     void LateUpdate(CMPUT350::GameContext* context) override;
+    void ReceiveNotification(const std::string& key) override;
     bool HandleKeyEvent(CMPUT350::GameContext* context, char key) override;
     bool IsAlive() const override;
     void Kill() override;

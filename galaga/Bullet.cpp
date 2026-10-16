@@ -32,11 +32,14 @@ void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
 void CMPUT350::Bullet::LateUpdate(CMPUT350::GameContext* context)
 {
 }
+void CMPUT350::Bullet::ReceiveNotification(const std::string& key) {
 
-bool CMPUT350::Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
-{
-    return false;
 }
+
+// bool CMPUT350::Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
+// {
+//     return false;
+// }
 
 void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
 {

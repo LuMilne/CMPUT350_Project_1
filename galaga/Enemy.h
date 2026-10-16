@@ -14,8 +14,12 @@ public:
     void Update(CMPUT350::GameContext* context) override;
     void LateUpdate(CMPUT350::GameContext* context) override;
     bool HandleKeyEvent(CMPUT350::GameContext* context, char key) override;
+    void ReceiveNotification(const std::string& key) override;
     bool IsAlive() const override;
     void Kill() override;
+
+    //Gunna have multiple enemy types
+    virtual bool Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) = 0;
 
     // Graphics Object Functions
     void RenderBackground(CMPUT350::GameContext* context) override;
@@ -28,6 +32,7 @@ public:
 
 private:
     bool alive;
+    float velocity;
     CMPUT350::Point2D enemy_position;
     std::string_view tag = "Enemy";
     float enemy_height = 30;

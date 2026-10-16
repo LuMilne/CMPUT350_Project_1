@@ -35,5 +35,20 @@ void NotificationManager::Notify(const std::string& message) {
     */
     //Sooooo I feel like we check if the message matches a "notification" like MoveLeft, and then we notify
     //The appropriate object
+
+    /*
+     *Current List:
+     *  left
+     *  right
+     *  shoot
+     *  enemy_shoot
+     *  stop
+     *
+     *Potential:
+     *  enter left: For enemies entering
+     *  enter right: For enemies entering
+     *  fly down: Might have multiple depending on enemy type if we need to
+     *  points: For scoring points, may need multiple values. i.e. points 200, points 550
+     */
 }
 }

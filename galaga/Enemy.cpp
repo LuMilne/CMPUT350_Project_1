@@ -21,10 +21,26 @@ void Enemy::LateUpdate(CMPUT350::GameContext* context)
 {
 }
 
-bool Enemy::HandleKeyEvent(CMPUT350::GameContext* context, char key)
-{
-    return false;
+void Enemy::ReceiveNotification(const std::string& key) {
+    if (key == "left") {
+        velocity = -2;
+        return;
+    }
+
+    if (key == "right") {
+        velocity = 2;
+        return;
+    }
+
+    if (key == "enemy_shoot") {
+        Attack();
+    }
 }
+
+// bool Enemy::HandleKeyEvent(CMPUT350::GameContext* context, char key)
+// {
+//     return false;
+// }
 
 void Enemy::RenderBackground(CMPUT350::GameContext* context)
 {

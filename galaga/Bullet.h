@@ -15,6 +15,7 @@ namespace CMPUT350 {
         void Update(CMPUT350::GameContext* context) override;
         void LateUpdate(CMPUT350::GameContext* context) override;
         bool HandleKeyEvent(CMPUT350::GameContext* context, char key) override;
+        void ReceiveNotification(const std::string& key) override;
         bool IsAlive() const override;
         void Kill() override;
 
