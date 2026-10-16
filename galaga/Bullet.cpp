@@ -1,6 +1,6 @@
 #include "Bullet.h"
 
-CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player)
+CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player, std::weak_ptr<CMPUT350::GameObject> parent)
 {
     is_player = player;
     alive = true;
@@ -8,16 +8,17 @@ CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, 
     head = heading;
     velocity = head.y * 20;
     top_Point = loc;
+    this->parent = parent;
 }
 
 bool CMPUT350::Bullet::IsPlayerBullet()
 {
-    return is_player;
+    if (auto p = parent.lock()) {
+        return p->IsPlayer();
+    }
+    return false;
 }
 
-void CMPUT350::Bullet::Initialize(CMPUT350::GameContext* context)
-{
-}
 
 void CMPUT350::Bullet::Update(CMPUT350::GameContext* context)
 {
@@ -36,15 +37,6 @@ void CMPUT350::Bullet::ReceiveNotification(const std::string& key) {
 
 }
 
-// bool CMPUT350::Bullet::HandleKeyEvent(CMPUT350::GameContext* context, char key)
-// {
-//     return false;
-// }
-
-void CMPUT350::Bullet::RenderBackground(CMPUT350::GameContext* context)
-{
-}
-
 void CMPUT350::Bullet::RenderForeground(CMPUT350::GameContext* context)
 {
     context->ScreenContext->DrawLine(top_Point, loc, 5.f, colour);
@@ -56,6 +48,11 @@ void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionO
     if (obj->GetBounds().IsInside(bounds.topLeft)) {
         Kill();
     }
+}
+
+void CMPUT350::Bullet::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj, const CMPUT350::Point2D &collisionPoint)
+{
+
 }
 
 void CMPUT350::Bullet::Kill()
@@ -75,3 +72,11 @@ const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
     bounds = Rect(loc.x, loc.y, 5, 10);
     return bounds;
 }
+
+CMPUT350::Point2D CMPUT350::Bullet::GetLocation() const {
+    return loc;
+}
+float CMPUT350::Bullet::GetRotation() const {
+    return std::numbers::pi/2;
+}
+
