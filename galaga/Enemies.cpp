@@ -37,7 +37,7 @@
  *_____________________________________________________________________________________
  */
 void Enemy1::Initialize(CMPUT350::GameContext *context) {
-
+    health = 1;
 }
 void Enemy1::LateUpdate(CMPUT350::GameContext *context) {
 
@@ -55,7 +55,7 @@ void Enemy1::RenderForeground(CMPUT350::GameContext *context) {
  *_____________________________________________________________________________________
  */
 void Enemy2::Initialize(CMPUT350::GameContext *context){
-
+    health = 2;
 }
 void Enemy2::LateUpdate(CMPUT350::GameContext *context) {
 
@@ -73,7 +73,7 @@ void Enemy2::RenderForeground(CMPUT350::GameContext *context) {
  *_____________________________________________________________________________________
  */
 void Enemy3::Initialize(CMPUT350::GameContext *context) {
-
+    health = 2;
 }
 void Enemy3::LateUpdate(CMPUT350::GameContext *context) {
 
