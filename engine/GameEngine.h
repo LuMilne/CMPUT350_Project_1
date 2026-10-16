@@ -36,13 +36,22 @@ public:
 
     void Run();
 
+    // Project 1b additions lemilne 10-16-2026
+	const_iterator cbegin() const override;
+	const_iterator cend() const override;
+	const_iterator begin() const override;
+	const_iterator end() const override;
+
 private:
+    using tGameObject = std::vector<std::shared_ptr<GameObject>>;
+    using const_iterator = tGameObject::const_iterator;
+
     std::shared_ptr<sf::RenderWindow> mWindow;
     std::shared_ptr<sf::Font> mFont;
     DrawContext canvas;
     GameContext context;
-    std::vector<std::shared_ptr<GameObject>> activeObjects;
-    std::vector<std::shared_ptr<GameObject>> incomingObjects;
+    tGameObject activeObjects;
+    tGameObject incomingObjects;
     // Project 1b element additions
     std::unordered_map<int, std::string> keyPressEvents;
     std::unordered_map<int, std::string> keyReleaseEvents;
