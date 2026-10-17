@@ -29,6 +29,12 @@ Galaga::~Galaga() {
     mWindow->close();
 }
 
+void Initialize(GameContext *context) {
+    // Register as listener for notifications. context.CurrObject should be this object during init
+    context->mNotificationManager->Register(context->CurrObject, "coin");
+    context->mNotificationManager->Register(context->CurrObject, "start");
+}
+
 void Galaga::Waiting(CMPUT350::GameContext* context) {
     if (!stars_made) {
         context->mEngineView->AddGameObject(std::make_shared<Stars>(250, CMPUT350::Rect(0, 0, 768, 1024)));
