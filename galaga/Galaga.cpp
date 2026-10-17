@@ -9,8 +9,11 @@ namespace CMPUT350 {
 class GameContext;
 
 Galaga::Galaga(int width, int height) : canvas(mWindow, mFont){
+
+    window_width = width;
+    window_height = height;
     mWindow =
-            std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
+            std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), "Galaga");
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
     mFont = std::make_shared<sf::Font>();
@@ -45,6 +48,15 @@ void Galaga::Waiting(CMPUT350::GameContext* context) {
             }
         }
 
+    }
+
+    if (!coin) {
+        sf::Text text(*mFont);
+        text.setString("Press 5 To Insert Coin");
+        text.setCharacterSize(50);
+        text.setFillColor(sf::Color::Yellow);
+        text.setStyle(sf::Text::Bold);
+        text.setPosition({window_width / 2 , window_height / 2});
     }
 
 }

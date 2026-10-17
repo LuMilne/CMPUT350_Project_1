@@ -23,6 +23,8 @@ private:
     GameState state = GameState::waiting;
 
     std::shared_ptr<sf::RenderWindow> mWindow;
+    float window_height;
+    float window_width;
     std::shared_ptr<sf::Font> mFont;
     DrawContext canvas;
 
