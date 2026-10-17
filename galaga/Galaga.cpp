@@ -4,8 +4,10 @@
 
 #include "Galaga.h"
 
+#include "Enemies.h"
 #include "FontData.h"
 #include "Player.h"
+#include "Stars.h"
 namespace CMPUT350 {
 class GameContext;
 
@@ -28,6 +30,11 @@ Galaga::~Galaga() {
 }
 
 void Galaga::Waiting(CMPUT350::GameContext* context) {
+    if (!stars_made) {
+        context->mEngineView->AddGameObject(std::make_shared<Stars>(250, CMPUT350::Rect(0, 0, 768, 1024)));
+        stars_made = true;
+    }
+
     if (coin) {
         if (started) {
             state = GameState::startup;
@@ -95,7 +102,42 @@ void Galaga::StartUp(CMPUT350::GameContext* context) {
     state = GameState::waves;
 }
 void Galaga::Waves(CMPUT350::GameContext* context) {
+    int new_wave = 292;
+    int enemy_wave_type = 1;
 
+    if (context->currentFrame % new_wave == 0) {
+        switch (enemy_wave_type) {
+            case 1:
+                for (int i = 0; i < 8; i++) {
+                    CMPUT350::Point2D form_spot(20 + i * 70, 340);
+                    auto enemy = std::make_shared<Enemy1>(form_spot, MakePath(form_spot));
+                    context->mEngineView->AddGameObject(enemy);
+                }
+                ++enemy_wave_type;
+                spawned_enemy_count + 8;
+                break;
+            case 2:
+                for (int i = 0; i < 8; i++) {
+                    CMPUT350::Point2D form_spot(20 + i * 70, 340);
+                    auto enemy = std::make_shared<Enemy2>(form_spot, MakePath(form_spot));
+                    context->mEngineView->AddGameObject(enemy);
+                }
+                ++enemy_wave_type;
+                break;
+            case 3:
+                for (int i = 0; i < 8; i++) {
+                    CMPUT350::Point2D form_spot(20 + i * 70, 340);
+                    auto enemy = std::make_shared<Enemy3>(form_spot, MakePath(form_spot));
+                    context->mEngineView->AddGameObject(enemy);
+                }
+                enemy_wave_type = 1;
+                break;
+        }
+    }
+
+    if (spawned_enemy_count == 40) {
+        state = GameState::gameplay;
+    }
 }
 void Galaga::GamePlay(CMPUT350::GameContext* context) {
 
@@ -123,6 +165,28 @@ void Galaga::Update(CMPUT350::GameContext* context) {
             break;
     }
 
+
+}
+
+std::vector<CMPUT350::Point2D> Galaga::MakePath(const CMPUT350::Point2D &form_spot) {
+
+    //AI usage:
+    //Claude AI
+    //Date: 2026/10/16 10:01 pm
+    //Prompt: My window dimensions are 768, 1024. What might a cubic bezier curves points look like from middle left to top left of screen
+    //Implementation: Helped get initial bezier curve points and a rough range. Obviously sent to top left so adjustments to get into right position needed
+    //Helpfulness: allowed me to make a basic starter bezier curve without heavy trial and error to find initial values.
+    std::vector<CMPUT350::Point2D> path({
+        {-60, 500},
+        {250, 512},
+        {350, 450},
+        {450, 600},
+        {500, 450},
+        {form_spot.x - 100, form_spot.y + 150},
+        {form_spot.x, form_spot.y}
+    });
+
+    return path;
 
 }
 
