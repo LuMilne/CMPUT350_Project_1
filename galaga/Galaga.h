@@ -45,7 +45,6 @@ private:
     int enemy_left_count = 0;
     bool coin = false;
     bool started = false;
-    bool stars_made = false;
     int next_attack_idx = 0;
 };
 }
