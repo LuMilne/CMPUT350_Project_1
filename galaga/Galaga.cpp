@@ -114,7 +114,7 @@ void Galaga::StartUp(CMPUT350::GameContext* context) {
 void Galaga::Waves(CMPUT350::GameContext* context) {
     //Lets us call a new wave when our enemies move down the screen
     int new_wave = 292;
-    int enemy_wave_type = 1;
+    enemy_wave_type = 1;
 
     DisplayScoreText();
     DisplayLevelText();
@@ -129,7 +129,7 @@ void Galaga::Waves(CMPUT350::GameContext* context) {
                     context->mEngineView->AddGameObject(enemy);
                 }
                 ++enemy_wave_type;
-                spawned_enemy_count + 8;
+                spawned_enemy_count += 8;
                 break;
             case 2:
                 for (int i = 0; i < 8; i++) {
@@ -138,7 +138,7 @@ void Galaga::Waves(CMPUT350::GameContext* context) {
                     context->mEngineView->AddGameObject(enemy);
                 }
                 ++enemy_wave_type;
-                spawned_enemy_count + 8;
+                spawned_enemy_count += 8;
                 break;
             case 3:
                 for (int i = 0; i < 8; i++) {
@@ -147,7 +147,7 @@ void Galaga::Waves(CMPUT350::GameContext* context) {
                     context->mEngineView->AddGameObject(enemy);
                 }
                 enemy_wave_type = 1;
-                spawned_enemy_count + 8;
+                spawned_enemy_count += 8;
                 break;
         }
     }

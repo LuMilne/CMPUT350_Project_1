@@ -34,6 +34,8 @@ private:
     std::shared_ptr<sf::Font> mFont;
     DrawContext canvas;
 
+    int enemy_wave_type;
+
     int start_frame = 0;
     int level = 1;
     int score = 0;
