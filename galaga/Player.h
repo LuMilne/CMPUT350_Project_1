@@ -30,6 +30,7 @@ public:
     const CMPUT350::ShapeType GetType() override;
 
     CMPUT350::Rect ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h);
+    bool IsPlayer() const override {return true;}
 
 private:
     //Negative left, Positive Right

@@ -21,6 +21,8 @@ public:
     virtual void Kill();
     // Project 1b additions
     virtual void ReceiveNotification(const std::string& key);
+
+    virtual bool IsPlayer() const {return false;}
 };
 }  // namespace CMPUT350
 
