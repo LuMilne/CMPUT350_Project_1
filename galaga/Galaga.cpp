@@ -5,6 +5,7 @@
 #include "Galaga.h"
 
 #include "FontData.h"
+#include "Player.h"
 namespace CMPUT350 {
 class GameContext;
 
@@ -61,7 +62,7 @@ void Galaga::Waiting(CMPUT350::GameContext* context) {
     }else {
         text.setString("Press 1 To Start Game");
     }
-    text.setCharacterSize(50);
+    text.setCharacterSize(100);
     text.setFillColor(sf::Color::Yellow);
     text.setStyle(sf::Text::Bold);
     text.setPosition({window_width / 2 , window_height / 2});
@@ -70,6 +71,28 @@ void Galaga::Waiting(CMPUT350::GameContext* context) {
 }
 void Galaga::StartUp(CMPUT350::GameContext* context) {
     //Draw lvl number top left, score top right, and draw ship
+    sf::Text score_text(*mFont);
+    std::string score_string= "Score: " + std::to_string(score);
+    score_text.setString(score_string);
+    score_text.setCharacterSize(50);
+    score_text.setFillColor(sf::Color::White);
+    score_text.setStyle(sf::Text::Bold);
+    score_text.setPosition({30 , 20});
+    mWindow->draw(score_text);
+
+    sf::Text level_text(*mFont);
+    std::string level_string = "Level: " + std::to_string(level);
+    level_text.setString(level_string);
+    level_text.setCharacterSize(50);
+    level_text.setFillColor(sf::Color::White);
+    level_text.setStyle(sf::Text::Bold);
+    level_text.setPosition({window_width - 30 , 20});
+
+    mWindow->draw(level_text);
+
+    auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
+    context->mEngineView->AddGameObject(player);
+    state = GameState::gameplay;
 }
 void Galaga::Waves(CMPUT350::GameContext* context) {
 
