@@ -96,6 +96,9 @@ public:
                                                  CMPUT350::Colors::white);
         context->ScreenContext->DrawLine(mLoc, mLoc + mCollisionPoint, mRadius * 0.1f, CMPUT350::Colors::blue);
     }
+    
+    CMPUT350::Point2D GetLocation() const override;
+    float GetRotation() const override;
 
 private:
     static std::random_device rd;

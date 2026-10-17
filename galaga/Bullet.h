@@ -20,6 +20,8 @@ namespace CMPUT350 {
 
         // Graphics Object Functions
         void RenderForeground(CMPUT350::GameContext* context) override;
+        Point2D GetLocation() const = 0;
+        float GetRotation() const = 0;
 
         // Collision Object Functions
         void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
@@ -27,9 +29,6 @@ namespace CMPUT350 {
         const Rect& GetBounds() override;
         const std::vector<CMPUT350::Shape> &GetShapes() override;
         const CMPUT350::ShapeType GetType() override;
-
-        Point2D GetLocation() const override;
-        float GetRotation() const override;
 
 
     private:

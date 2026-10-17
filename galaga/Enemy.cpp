@@ -80,10 +80,10 @@ void Enemy::ReceiveNotification(const std::string& key) {
     }
 }
 
-// bool Enemy::HandleKeyEvent(CMPUT350::GameContext* context, char key)
-// {
-//     return false;
-// }
+bool Enemy::HandleKeyEvent(CMPUT350::GameContext* context, char key)
+{
+    return false;
+}
 
 void Enemy::RenderBackground(CMPUT350::GameContext* context)
 {
@@ -123,8 +123,29 @@ const CMPUT350::Rect& Enemy::GetBounds()
     return bounds;
 }
 
-const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kRect; }
+const CMPUT350::ShapeType Enemy::GetType() { return CMPUT350::ShapeType::kRect; }
+
+const std::vector<CMPUT350::Shape>& Enemy::GetShapes() {
+    shapes.clear();
+    shapes.emplace_back(GetBounds());
+    return shapes;
+}
 
 void Enemy::SetPosition(const CMPUT350::Point2D& pos) {
     enemy_position = pos;
+}
+
+void Enemy::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj,
+                           const CMPUT350::Point2D& collisionPoint) {
+    CollisionEnter(obj);
+}
+
+CMPUT350::Point2D Enemy::GetLocation() const {
+    return CMPUT350::Point2D(
+        enemy_position.x + enemy_width / 2.0f,
+        enemy_position.y + enemy_height / 2.0f);
+}
+
+float Enemy::GetRotation() const {
+    return 0.0f;
 }
