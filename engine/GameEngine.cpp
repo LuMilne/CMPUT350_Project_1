@@ -7,6 +7,7 @@
 #include "../galaga/Player.h"
 #include "../galaga/Bullet.h"
 #include "../galaga/Enemy.h"
+#include "../galaga/Galaga.h"
 #include <SFML/Graphics/RenderWindow.hpp>
 #include <SFML/Window/VideoMode.hpp>
 #include <cassert>
@@ -90,6 +91,13 @@ GameEngine::const_iterator GameEngine::end() const { return this->activeObjects.
  * all objects have been destroyed.
  */
 void GameEngine::Run() {
+    for( auto obj = begin(); obj != end(); obj++ ) {
+        // Filter for collision objects
+        if( auto gal = std::dynamic_pointer_cast<Galaga>(*obj) ) {
+            gal->Update(&context);
+        }
+    }
+
     while (mWindow->isOpen())  // window is open
     {
         // 0. Remove any objects that are now dead
