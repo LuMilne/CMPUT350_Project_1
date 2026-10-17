@@ -7,7 +7,7 @@ namespace CMPUT350 {
     class Bullet : public CMPUT350::CollisionObject
     {
     public:
-        Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player, std::weak_ptr<CMPUT350::GameObject> parent);
+        Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player, std::weak_ptr<CMPUT350::GameObject> parent = {});
         bool IsPlayerBullet();
 
         // GameObject Functions
@@ -20,8 +20,8 @@ namespace CMPUT350 {
 
         // Graphics Object Functions
         void RenderForeground(CMPUT350::GameContext* context) override;
-        Point2D GetLocation() const = 0;
-        float GetRotation() const = 0;
+        Point2D GetLocation() const override;
+        float GetRotation() const override;
 
         // Collision Object Functions
         void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
@@ -39,6 +39,7 @@ namespace CMPUT350 {
         Point2D head;
         Point2D biggest_y;
         Rect bounds;
+        std::vector<CMPUT350::Shape> shapes;
         float velocity;
         RGBColor colour_player = Colors::green;
         RGBColor colour_enemy = Colors::red;

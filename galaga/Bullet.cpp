@@ -85,7 +85,7 @@ const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
     return bounds;
 }
 
-const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kLine; }
+const CMPUT350::ShapeType CMPUT350::Bullet::GetType() { return CMPUT350::ShapeType::kLine; }
 CMPUT350::Point2D CMPUT350::Bullet::GetLocation() const {
     return loc;
 }
@@ -94,17 +94,7 @@ float CMPUT350::Bullet::GetRotation() const {
 }
 
 // TODO: Implement
-CMPUT350::Point2D GetLocation() {
-    return CMPUT350::Point2D(0.0,0.0);
-}
-
-// TODO: Implement
-float GetRotation() {
-    return 0.0f;
-}
-
-// TODO: Implement
-const std::vector<CMPUT350::Shape> &GetShapes() {
+const std::vector<CMPUT350::Shape>& CMPUT350::Bullet::GetShapes() {
     return std::vector<CMPUT350::Shape>();
 }
 
