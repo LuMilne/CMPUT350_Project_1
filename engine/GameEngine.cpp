@@ -34,6 +34,9 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
 
     // Project 1b additions, lemilne 10-16-2026
 
+    // Create a NotificationManager
+    context.mNotificationManager = &CMPUT350::NotificationManager();
+
     // Default keybindings
     keyPressEvents = {
         {(int) sf::Keyboard::Scan::Num1,    "start"},

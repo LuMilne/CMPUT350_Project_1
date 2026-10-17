@@ -133,10 +133,6 @@ void Player::RenderForeground(CMPUT350::GameContext* context)
 
 void Player::CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj)
 {
-    bounds = GetBounds();
-    if (bounds.IsInside(obj->GetBounds().topLeft)) {
-        Kill();
-    }
 }
 
 void Player::Kill()
