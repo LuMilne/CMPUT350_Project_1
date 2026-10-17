@@ -127,9 +127,9 @@ int main()
     }
     else
     {
-        CMPUT350::GameEngine engine(768, 1024, "Galaga");
-        auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
-        engine.AddGameObject(player);
+        CMPUT350::GameEngine engine(768, 1024, "Engine");
+        //auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
+        //engine.AddGameObject(player);
         engine.AddGameObject(std::make_shared<Stars>(250, CMPUT350::Rect(0, 0, 768, 1024)));
         for (int row = 0; row < 5; row++)
         {

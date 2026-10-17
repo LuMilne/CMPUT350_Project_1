@@ -5,12 +5,16 @@
 #include "Galaga.h"
 
 #include "FontData.h"
+#include "Player.h"
 namespace CMPUT350 {
 class GameContext;
 
 Galaga::Galaga(int width, int height) : canvas(mWindow, mFont){
+
+    window_width = width;
+    window_height = height;
     mWindow =
-            std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
+            std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), "Galaga");
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
     mFont = std::make_shared<sf::Font>();
@@ -23,10 +27,12 @@ Galaga::~Galaga() {
     mWindow->close();
 }
 
-void Galaga::Waiting() {
+void Galaga::Waiting(CMPUT350::GameContext* context) {
     if (coin) {
-        state = GameState::startup;
-        return;
+        if (started) {
+            state = GameState::startup;
+            return;
+        }
     }
 
     while (std::optional<sf::Event> event = mWindow->pollEvent())
@@ -42,41 +48,78 @@ void Galaga::Waiting() {
             // Scancodes from google
             if(code == 6 || code == 76) {
                 coin = true;
+            }else if (code == 1 || code == 79) {
+                started = true;
             }
         }
 
     }
 
+
+    sf::Text text(*mFont);
+    if (!coin) {
+        text.setString("Press 5 To Insert Coin");
+    }else {
+        text.setString("Press 1 To Start Game");
+    }
+    text.setCharacterSize(100);
+    text.setFillColor(sf::Color::Yellow);
+    text.setStyle(sf::Text::Bold);
+    text.setPosition({window_width / 2 , window_height / 2});
+
+    mWindow->draw(text);
 }
-void Galaga::StartUp() {
+void Galaga::StartUp(CMPUT350::GameContext* context) {
+    //Draw lvl number top left, score top right, and draw ship
+    sf::Text score_text(*mFont);
+    std::string score_string= "Score: " + std::to_string(score);
+    score_text.setString(score_string);
+    score_text.setCharacterSize(50);
+    score_text.setFillColor(sf::Color::White);
+    score_text.setStyle(sf::Text::Bold);
+    score_text.setPosition({30 , 20});
+    mWindow->draw(score_text);
+
+    sf::Text level_text(*mFont);
+    std::string level_string = "Level: " + std::to_string(level);
+    level_text.setString(level_string);
+    level_text.setCharacterSize(50);
+    level_text.setFillColor(sf::Color::White);
+    level_text.setStyle(sf::Text::Bold);
+    level_text.setPosition({window_width - 30 , 20});
+
+    mWindow->draw(level_text);
+
+    auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
+    context->mEngineView->AddGameObject(player);
+    state = GameState::waves;
+}
+void Galaga::Waves(CMPUT350::GameContext* context) {
 
 }
-void Galaga::Waves() {
+void Galaga::GamePlay(CMPUT350::GameContext* context) {
 
 }
-void Galaga::GamePlay() {
-
-}
-void Galaga::GameOver() {
+void Galaga::GameOver(CMPUT350::GameContext* context) {
 
 }
 
 void Galaga::Update(CMPUT350::GameContext* context) {
     switch (state) {
         case GameState::waiting:
-            Waiting();
+            Waiting(context);
             break;
         case GameState::startup:
-            StartUp();
+            StartUp(context);
             break;
         case GameState::waves:
-            Waves();
+            Waves(context);
             break;
         case GameState::gameplay:
-            GamePlay();
+            GamePlay(context);
             break;
         case GameState::gameover:
-            GameOver();
+            GameOver(context);
             break;
     }
 
