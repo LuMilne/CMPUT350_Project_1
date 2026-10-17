@@ -155,6 +155,8 @@ const CMPUT350::Rect& Player::GetBounds()
     return bounds;
 }
 
+const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kRect; }
+
 void Player::SetPosition(const CMPUT350::Point2D current_position, const float new_velocity) {
     player_position.x = current_position.x + new_velocity;
 }

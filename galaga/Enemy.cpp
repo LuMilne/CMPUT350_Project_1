@@ -123,6 +123,8 @@ const CMPUT350::Rect& Enemy::GetBounds()
     return bounds;
 }
 
+const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kRect; }
+
 void Enemy::SetPosition(const CMPUT350::Point2D& pos) {
     enemy_position = pos;
 }

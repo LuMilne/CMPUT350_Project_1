@@ -26,6 +26,7 @@ namespace CMPUT350 {
         void CollisionEnter(const std::shared_ptr<CollisionObject> &obj, const CMPUT350::Point2D &collisionPoint) override;
         const Rect& GetBounds() override;
         const std::vector<CMPUT350::Shape> &GetShapes() override;
+        const CMPUT350::ShapeType GetType() override;
 
         Point2D GetLocation() const override;
         float GetRotation() const override;

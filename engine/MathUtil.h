@@ -224,10 +224,29 @@ struct Rect {
     }
 
     bool IsInside(const Point2D &p) const {
+        /*
         if (topLeft.x <= p.x && topLeft.y <= p.y
             && topLeft.x + width >= p.x && topLeft.y + height >= p.y)
         {
             return true;
+        }
+        */
+        if( p.x >= topLeft.x && p.x <= (topLeft.x + width) ) { // Horizontal overlap
+            if( p.y >= topLeft.y && p.y <= (topLeft.y + height) ) { // Vertical overlap
+                // Horizontal + Vertical overlap = collision
+                return true;
+            }
+        }
+        return false;
+    }
+
+    bool IsInside(const Rect &r) const {
+        auto rPt = r.topLeft;
+        if( rPt.x >= topLeft.x && rPt.x <= (topLeft.x + width) || (topLeft.x >= rPt.x && topLeft.x <= (rPt.x + r.width)) ) { // Horizontal overlap
+            if( rPt.y >= topLeft.y && rPt.y <= (topLeft.y + height) || (topLeft.y >= rPt.y && topLeft.y <= (rPt.y + r.height)) ) { // Vertical overlap
+                // Horizontal + Vertical overlap = collision
+                return true;
+            }
         }
         return false;
     }

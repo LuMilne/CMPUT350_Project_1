@@ -1,5 +1,6 @@
 #include "GameEngine.h"
 #include "GameContext.h"
+#include "MathUtil.h"
 
 /// @brief
 #include "FontData.h"
@@ -32,6 +33,8 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
 
     // Default keybindings
     keyPressEvents = {
+        {(int) sf::Keyboard::Scan::Num1,    "start"},
+        {(int) sf::Keyboard::Scan::Num5,    "coin"},
         {(int) sf::Keyboard::Scan::Left,    "left"},
         {(int) sf::Keyboard::Scan::A,       "left"},
         {(int) sf::Keyboard::Scan::Right,   "right"},
@@ -145,7 +148,43 @@ void GameEngine::Run() {
             obj->Update(&context);
         }
         // 4. Process collision events
-        // Bullet collisions
+        for( auto obj = begin(); obj != end(); obj++ ) {
+            // Filter for collision objects
+            if( auto col1 = std::dynamic_pointer_cast<CollisionObject>(*obj) ) {
+                // When found, iterate over remaining objects in search of possible collisions
+                for( auto it = std::next(obj); it != end(); it++ ) {
+                    if( auto col2 = std::dynamic_pointer_cast<CollisionObject>(*it) ) {
+                        // Get bounding boxes
+                        if(col1->GetType() == CMPUT350::ShapeType::kLine) {
+                            if(col2->GetType() == CMPUT350::ShapeType::kLine) {
+                                // No line/line collisions
+                            }
+                            else {
+                                if( col2->GetBounds().IsInside(col1->GetLocation()) ) { // Line/Rect Collision
+                                    col2->CollisionEnter(col1, col1->GetLocation());    
+                                    col1->CollisionEnter(col2);
+                                }
+                            }
+                        }
+                        else {
+                            if(col2->GetType() == CMPUT350::ShapeType::kLine) {
+                                if( col1->GetBounds().IsInside(col2->GetLocation()) ) { // Rect/Line Collision
+                                    col1->CollisionEnter(col2, col2->GetLocation());    
+                                    col2->CollisionEnter(col1);
+                                }
+                            }
+                            else {
+                                if( col1->GetBounds().IsInside(col2->GetBounds()) ) {   // Rect/Rect Collision
+                                    col1->CollisionEnter(col2);                         
+                                    col2->CollisionEnter(col1);
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    /*  OLD CODE
         for( auto obj : activeObjects ) {
             // Filter for Bullet subclasses
             if(auto bul = dynamic_cast<Bullet*>(obj.get()) ) {
@@ -166,7 +205,7 @@ void GameEngine::Run() {
                 }
             }
         }
-
+    */
         // 5. Late updates
         for( auto obj : activeObjects ) {
             obj->LateUpdate(&context);

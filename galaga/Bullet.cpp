@@ -84,6 +84,7 @@ const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
     return bounds;
 }
 
+const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kLine; }
 CMPUT350::Point2D CMPUT350::Bullet::GetLocation() const {
     return loc;
 }
