@@ -6,7 +6,7 @@
 #define PROJECT1_GALAGA_H
 #include "GameContext.h"
 namespace CMPUT350 {
-class Galaga {
+class Galaga : public CMPUT350::GameObject {
 
 public:
     Galaga(int width, int height);
