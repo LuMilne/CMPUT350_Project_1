@@ -36,11 +36,13 @@ void Initialize(GameContext *context) {
 }
 
 void Galaga::Waiting(CMPUT350::GameContext* context) {
+    //Makes stars for background, checks to make sure its only done once
     if (!stars_made) {
         context->mEngineView->AddGameObject(std::make_shared<Stars>(250, CMPUT350::Rect(0, 0, 768, 1024)));
         stars_made = true;
     }
 
+    //Checks if both a coin is inserted and game is started
     if (coin) {
         if (started) {
             state = GameState::startup;
@@ -83,36 +85,43 @@ void Galaga::Waiting(CMPUT350::GameContext* context) {
     mWindow->draw(text);
 }
 void Galaga::StartUp(CMPUT350::GameContext* context) {
-    //Draw lvl number top left, score top right, and draw ship
-    sf::Text score_text(*mFont);
-    std::string score_string= "Score: " + std::to_string(score);
-    score_text.setString(score_string);
-    score_text.setCharacterSize(50);
-    score_text.setFillColor(sf::Color::White);
-    score_text.setStyle(sf::Text::Bold);
-    score_text.setPosition({30 , 20});
-    mWindow->draw(score_text);
+    //Displays text to see score
+    // sf::Text score_text(*mFont);
+    // std::string score_string= "Score: " + std::to_string(score);
+    // score_text.setString(score_string);
+    // score_text.setCharacterSize(50);
+    // score_text.setFillColor(sf::Color::White);
+    // score_text.setStyle(sf::Text::Bold);
+    // score_text.setPosition({30 , 20});
+    // mWindow->draw(score_text);
+    DisplayScoreText();
 
-    sf::Text level_text(*mFont);
-    std::string level_string = "Level: " + std::to_string(level);
-    level_text.setString(level_string);
-    level_text.setCharacterSize(50);
-    level_text.setFillColor(sf::Color::White);
-    level_text.setStyle(sf::Text::Bold);
-    level_text.setPosition({window_width - 30 , 20});
-
-    mWindow->draw(level_text);
+    //Displays text to see level
+    // sf::Text level_text(*mFont);
+    // std::string level_string = "Level: " + std::to_string(level);
+    // level_text.setString(level_string);
+    // level_text.setCharacterSize(50);
+    // level_text.setFillColor(sf::Color::White);
+    // level_text.setStyle(sf::Text::Bold);
+    // level_text.setPosition({window_width - 30 , 20});
+    // mWindow->draw(level_text);
+    DisplayLevelText();
 
     auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
     context->mEngineView->AddGameObject(player);
     state = GameState::waves;
 }
 void Galaga::Waves(CMPUT350::GameContext* context) {
+    //Lets us call a new wave when our enemies move down the screen
     int new_wave = 292;
     int enemy_wave_type = 1;
 
+    DisplayScoreText();
+    DisplayLevelText();
+
     if (context->currentFrame % new_wave == 0) {
         switch (enemy_wave_type) {
+            //Spawns all 3 enemy types in a rotating order
             case 1:
                 for (int i = 0; i < 8; i++) {
                     CMPUT350::Point2D form_spot(20 + i * 70, 340);
@@ -148,6 +157,8 @@ void Galaga::Waves(CMPUT350::GameContext* context) {
     }
 }
 void Galaga::GamePlay(CMPUT350::GameContext* context) {
+    DisplayScoreText();
+    DisplayLevelText();
 
 }
 void Galaga::GameOver(CMPUT350::GameContext* context) {
@@ -155,6 +166,7 @@ void Galaga::GameOver(CMPUT350::GameContext* context) {
 }
 
 void Galaga::Update(CMPUT350::GameContext* context) {
+    //Switch cases for game state
     switch (state) {
         case GameState::waiting:
             Waiting(context);
@@ -201,9 +213,35 @@ std::vector<CMPUT350::Point2D> Galaga::MakePath(const CMPUT350::Point2D &form_sp
 void Galaga::ReceiveNotification(const std::string& key) {
     if (key == "coin") {
         coin = true;
-    }else if (key == "start") {
+    }else if (key == "start" && coin) { //Checks to see if we hit "1" to start and we hit "5" for coin
         started = true;
     }
 }
+
+//Displays text to see level
+void Galaga::DisplayScoreText() {
+    sf::Text score_text(*mFont);
+    std::string score_string= "Score: " + std::to_string(score);
+    score_text.setString(score_string);
+    score_text.setCharacterSize(50);
+    score_text.setFillColor(sf::Color::White);
+    score_text.setStyle(sf::Text::Bold);
+    score_text.setPosition({30 , 20});
+    mWindow->draw(score_text);
+}
+
+//Displays text to see level
+void Galaga::DisplayLevelText() {
+    sf::Text level_text(*mFont);
+    std::string level_string = "Level: " + std::to_string(level);
+    level_text.setString(level_string);
+    level_text.setCharacterSize(50);
+    level_text.setFillColor(sf::Color::White);
+    level_text.setStyle(sf::Text::Bold);
+    level_text.setPosition({window_width - 30 , 20});
+
+    mWindow->draw(level_text);
+}
+
 
 }
