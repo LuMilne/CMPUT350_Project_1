@@ -29,7 +29,7 @@ Galaga::~Galaga() {
     mWindow->close();
 }
 
-void Initialize(GameContext *context) {
+void Galaga::Initialize(GameContext *context) {
     // Register as listener for notifications. context.CurrObject should be this object during init
     context->mNotificationManager->Register(context->CurrObject, "coin");
     context->mNotificationManager->Register(context->CurrObject, "start");
