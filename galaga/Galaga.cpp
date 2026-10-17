@@ -28,8 +28,10 @@ Galaga::~Galaga() {
 
 void Galaga::Waiting(CMPUT350::GameContext* context) {
     if (coin) {
-        state = GameState::startup;
-        return;
+        if (started) {
+            state = GameState::startup;
+            return;
+        }
     }
 
     while (std::optional<sf::Event> event = mWindow->pollEvent())
@@ -45,20 +47,26 @@ void Galaga::Waiting(CMPUT350::GameContext* context) {
             // Scancodes from google
             if(code == 6 || code == 76) {
                 coin = true;
+            }else if (code == 1 || code == 79) {
+                started = true;
             }
         }
 
     }
 
-    if (!coin) {
-        sf::Text text(*mFont);
-        text.setString("Press 5 To Insert Coin");
-        text.setCharacterSize(50);
-        text.setFillColor(sf::Color::Yellow);
-        text.setStyle(sf::Text::Bold);
-        text.setPosition({window_width / 2 , window_height / 2});
-    }
 
+    sf::Text text(*mFont);
+    if (!coin) {
+        text.setString("Press 5 To Insert Coin");
+    }else {
+        text.setString("Press 1 To Start Game");
+    }
+    text.setCharacterSize(50);
+    text.setFillColor(sf::Color::Yellow);
+    text.setStyle(sf::Text::Bold);
+    text.setPosition({window_width / 2 , window_height / 2});
+
+    mWindow->draw(text);
 }
 void Galaga::StartUp(CMPUT350::GameContext* context) {
     //Draw lvl number top left, score top right, and draw ship

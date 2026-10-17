@@ -36,6 +36,7 @@ private:
     int spawned_enemy_count = 0;
     int enemy_left_count = 0;
     bool coin = false;
+    bool started = false;
     int next_attack_idx = 0;
 };
 }
