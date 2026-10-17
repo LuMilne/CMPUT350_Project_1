@@ -16,7 +16,7 @@ namespace CMPUT350 {
 
     // Initialize Engine
 GameEngine::GameEngine(unsigned int width, unsigned int height, const std::string& name)
-    : canvas(mWindow, mFont) {
+    : canvas(mWindow, mFont), manager() {
     // Create game window
     mWindow =
         std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
@@ -35,7 +35,7 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
     // Project 1b additions, lemilne 10-16-2026
 
     // Create a NotificationManager
-    context.mNotificationManager = &CMPUT350::NotificationManager();
+    context.mNotificationManager = &manager;
 
     // Default keybindings
     keyPressEvents = {

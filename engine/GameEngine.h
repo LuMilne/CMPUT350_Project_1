@@ -53,7 +53,7 @@ private:
     tGameObject activeObjects;
     tGameObject incomingObjects;
     // Project 1b element additions
-    CMPUT350::NotificationManager mNotificationManager;
+    CMPUT350::NotificationManager manager;
     std::unordered_map<int, std::string> keyPressEvents;
     std::unordered_map<int, std::string> keyReleaseEvents;
 };
