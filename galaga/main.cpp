@@ -84,6 +84,16 @@ public:
         return bounds;
     }
 
+    const std::vector<CMPUT350::Shape>& GetShapes() override
+    {
+        return std::vector<CMPUT350::Shape>();
+    }
+
+    const CMPUT350::ShapeType GetType() override
+    {
+        return CMPUT350::ShapeType::kCircle;
+    }
+
     bool IsAlive() const override
     {
         return mNumCollisions < 10;
