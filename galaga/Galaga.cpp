@@ -23,7 +23,7 @@ Galaga::~Galaga() {
     mWindow->close();
 }
 
-void Galaga::Waiting() {
+void Galaga::Waiting(CMPUT350::GameContext* context) {
     if (coin) {
         state = GameState::startup;
         return;
@@ -48,35 +48,35 @@ void Galaga::Waiting() {
     }
 
 }
-void Galaga::StartUp() {
+void Galaga::StartUp(CMPUT350::GameContext* context) {
+    //Draw lvl number top left, score top right, and draw ship
+}
+void Galaga::Waves(CMPUT350::GameContext* context) {
 
 }
-void Galaga::Waves() {
+void Galaga::GamePlay(CMPUT350::GameContext* context) {
 
 }
-void Galaga::GamePlay() {
-
-}
-void Galaga::GameOver() {
+void Galaga::GameOver(CMPUT350::GameContext* context) {
 
 }
 
 void Galaga::Update(CMPUT350::GameContext* context) {
     switch (state) {
         case GameState::waiting:
-            Waiting();
+            Waiting(context);
             break;
         case GameState::startup:
-            StartUp();
+            StartUp(context);
             break;
         case GameState::waves:
-            Waves();
+            Waves(context);
             break;
         case GameState::gameplay:
-            GamePlay();
+            GamePlay(context);
             break;
         case GameState::gameover:
-            GameOver();
+            GameOver(context);
             break;
     }
 

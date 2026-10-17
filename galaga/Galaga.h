@@ -12,11 +12,11 @@ public:
     Galaga(int width, int height);
     ~Galaga();
     void Update(CMPUT350::GameContext* context);
-    void Waiting();
-    void StartUp();
-    void Waves();
-    void GamePlay();
-    void GameOver();
+    void Waiting(CMPUT350::GameContext* context);
+    void StartUp(CMPUT350::GameContext* context);
+    void Waves(CMPUT350::GameContext* context);
+    void GamePlay(CMPUT350::GameContext* context);
+    void GameOver(CMPUT350::GameContext* context);
 
 private:
     enum class GameState {waiting, startup, waves, gameplay, gameover};
