@@ -9,7 +9,7 @@ namespace CMPUT350 {
 class Galaga {
 
 public:
-    Galaga();
+    Galaga(int width, int height);
     ~Galaga();
     void Update(CMPUT350::GameContext* context);
     void Waiting();
@@ -21,6 +21,10 @@ public:
 private:
     enum class GameState {waiting, startup, waves, gameplay, gameover};
     GameState state = GameState::waiting;
+
+    std::shared_ptr<sf::RenderWindow> mWindow;
+    std::shared_ptr<sf::Font> mFont;
+    DrawContext canvas;
 
     int start_frame = 0;
     int level = 1;

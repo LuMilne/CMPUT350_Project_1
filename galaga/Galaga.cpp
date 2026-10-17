@@ -3,22 +3,61 @@
 //
 
 #include "Galaga.h"
+
+#include "FontData.h"
 namespace CMPUT350 {
 class GameContext;
 
-void Waiting() {
+Galaga::Galaga(int width, int height) : canvas(mWindow, mFont){
+    mWindow =
+            std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
+    mWindow->setFramerateLimit(30);
+    // Load resources. For P(1a), just the font from the header file
+    mFont = std::make_shared<sf::Font>();
+    if (!mFont->openFromMemory(&_font, _font_len)) {
+        fprintf(stderr, "WARNING: Font did not load.\n");
+    }
+}
+
+Galaga::~Galaga() {
+    mWindow->close();
+}
+
+void Galaga::Waiting() {
+    if (coin) {
+        state = GameState::startup;
+        return;
+    }
+
+    while (std::optional<sf::Event> event = mWindow->pollEvent())
+    {
+        if(event->is<sf::Event::Closed>()) {
+            mWindow->close();
+            while(mWindow->pollEvent()) {} // Copied from GameEngine
+            return;
+        }
+
+        if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
+            int code = (int)keyReleased->scancode;
+            // Scancodes from google
+            if(code == 6 || code == 76) {
+                coin = true;
+            }
+        }
+
+    }
 
 }
-void StartUp() {
+void Galaga::StartUp() {
 
 }
-void Waves() {
+void Galaga::Waves() {
 
 }
-void GamePlay() {
+void Galaga::GamePlay() {
 
 }
-void GameOver() {
+void Galaga::GameOver() {
 
 }
 
