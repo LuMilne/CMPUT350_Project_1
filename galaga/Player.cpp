@@ -1,4 +1,5 @@
 #include <cassert>
+#include <memory>
 #include "Player.h"
 #include "Bullet.h"
 
@@ -10,7 +11,12 @@ Player::Player(CMPUT350::Point2D loc)
 
 void Player::Initialize(CMPUT350::GameContext* context)
 {
-
+    // Store context for object creation
+    playerContext = context;
+    // Register as listener for notifications. context.CurrObject should be this Player during init
+    playerContext->mNotificationManager->Register(playerContext->CurrObject, "left");
+    playerContext->mNotificationManager->Register(playerContext->CurrObject, "right");
+    playerContext->mNotificationManager->Register(playerContext->CurrObject, "shoot");
 }
 
 void Player::Update(CMPUT350::GameContext* context)
@@ -43,7 +49,7 @@ void Player::ReceiveNotification(const std::string& key) {
             auto heading = CMPUT350::Point2D(0, -1);
             std::shared_ptr<CMPUT350::Bullet> new_bullet = std::make_shared<CMPUT350::Bullet>((player_position + 20.0f), heading, true);
             bullet_one = new_bullet;
-            context->mEngineView->AddGameObject(new_bullet);
+            playerContext->mEngineView->AddGameObject(new_bullet);
             return;
         }
 
@@ -51,7 +57,7 @@ void Player::ReceiveNotification(const std::string& key) {
             auto heading = CMPUT350::Point2D(0, -1);
             std::shared_ptr<CMPUT350::Bullet> new_bullet = std::make_shared<CMPUT350::Bullet>((player_position + 20.0f), heading, true);
             bullet_two = new_bullet;
-            context->mEngineView->AddGameObject(new_bullet);
+            playerContext->mEngineView->AddGameObject(new_bullet);
             return;
         }
         return;

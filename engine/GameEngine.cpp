@@ -24,8 +24,6 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
     if (!mFont->openFromMemory(&_font, _font_len)) {
         fprintf(stderr, "WARNING: Font did not load.\n");
     }
-    // Set DrawContext using font
-    canvas = DrawContext(mWindow, mFont);
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
     context.ScreenContext = &canvas;
@@ -73,6 +71,13 @@ void GameEngine::InstallKeyUpNotification(int scanCode,  const std::string &noti
     keyReleaseEvents[scanCode] = notification;
 }
 
+// Getters for iterators over incomingObjects
+GameEngine::const_iterator GameEngine::cbegin() const { return this->incomingObjects.begin(); }
+GameEngine::const_iterator GameEngine::cend() const { return this->incomingObjects.end(); }
+// Getters for iterators over activeObjects
+GameEngine::const_iterator GameEngine::begin() const { return this->activeObjects.begin(); }
+GameEngine::const_iterator GameEngine::end() const { return this->activeObjects.end(); }
+
 /**
  * @method Run
  * @arguments None
@@ -83,23 +88,25 @@ void GameEngine::Run() {
     while (mWindow->isOpen())  // window is open
     {
         // 0. Remove any objects that are now dead
-        auto i = activeObjects.begin(); 
-        while(  i != activeObjects.end() ) {
+        auto i = begin(); 
+        while(  i != end() ) {
             if( !(*i)->IsAlive() ) {    // Dereferencing pointer to pointer. Blegh. Cleaner way to do this?
                 activeObjects.erase(i);
-                i = activeObjects.begin();  // Inefficient navigation of vector, but bug free. Maybe fix later.
+                i = begin();  // Inefficient navigation of vector, but bug free. Maybe fix later.
             }
             else {i++;}
         }
         // 1. Activate and initialize any objects added during the last frame
-        while( !incomingObjects.empty() ) {
+        while( cbegin() != cend() ) {
             // Source: https://stackoverflow.com/questions/17436970/how-do-i-move-a-shared-ptr-object-between-containers-with-move-semantics
             // Time: 09/24/2026, 12:25pm
             // Referenced user quant's implementation of user David Schwartz' solution for passing shared_ptr between vectors
+            context.CurrObject = incomingObjects.back();    // Set initializing object as context.CurrObject for the duration
             incomingObjects.back()->Initialize(&context);
             activeObjects.push_back(std::move(incomingObjects.back()));
             assert(incomingObjects.back() == nullptr);
             incomingObjects.pop_back();
+            context.CurrObject.reset();
         }
 
         // 2. Process events
