@@ -92,7 +92,7 @@ void Galaga::StartUp(CMPUT350::GameContext* context) {
 
     auto player = std::make_shared<Player>(CMPUT350::Point2D(768 / 2, 900));
     context->mEngineView->AddGameObject(player);
-    state = GameState::gameplay;
+    state = GameState::waves;
 }
 void Galaga::Waves(CMPUT350::GameContext* context) {
 
