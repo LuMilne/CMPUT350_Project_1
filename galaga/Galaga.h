@@ -18,6 +18,8 @@ public:
     void GamePlay(CMPUT350::GameContext* context);
     void GameOver(CMPUT350::GameContext* context);
 
+    std::vector<CMPUT350::Point2D> MakePath(const CMPUT350::Point2D &form_spot);
+
 private:
     enum class GameState {waiting, startup, waves, gameplay, gameover};
     GameState state = GameState::waiting;
