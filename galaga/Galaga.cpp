@@ -48,25 +48,25 @@ void Galaga::Waiting(CMPUT350::GameContext* context) {
         }
     }
 
-    while (std::optional<sf::Event> event = mWindow->pollEvent())
-    {
-        if(event->is<sf::Event::Closed>()) {
-            mWindow->close();
-            while(mWindow->pollEvent()) {} // Copied from GameEngine
-            return;
-        }
-
-        if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
-            int code = (int)keyReleased->scancode;
-            // Scancodes from google
-            if(code == 6 || code == 76) {
-                coin = true;
-            }else if (code == 1 || code == 79) {
-                started = true;
-            }
-        }
-
-    }
+    // while (std::optional<sf::Event> event = mWindow->pollEvent())
+    // {
+    //     if(event->is<sf::Event::Closed>()) {
+    //         mWindow->close();
+    //         while(mWindow->pollEvent()) {} // Copied from GameEngine
+    //         return;
+    //     }
+    //
+    //     if(const auto* keyReleased = event->getIf<sf::Event::KeyReleased>()) {  // Key release controls for Player
+    //         int code = (int)keyReleased->scancode;
+    //         // Scancodes from google
+    //         if(code == 6 || code == 76) {
+    //             coin = true;
+    //         }else if (code == 1 || code == 79) {
+    //             started = true;
+    //         }
+    //     }
+    //
+    // }
 
 
     sf::Text text(*mFont);
@@ -196,6 +196,12 @@ std::vector<CMPUT350::Point2D> Galaga::MakePath(const CMPUT350::Point2D &form_sp
 
 }
 
-
+void Galaga::ReceiveNotification(const std::string& key) {
+    if (key == "coin") {
+        coin = true;
+    }else if (key == "start") {
+        started = true;
+    }
+}
 
 }

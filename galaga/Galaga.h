@@ -19,6 +19,7 @@ public:
     void GameOver(CMPUT350::GameContext* context);
 
     std::vector<CMPUT350::Point2D> MakePath(const CMPUT350::Point2D &form_spot);
+    void ReceiveNotification(const std::string& key) override;
 
 private:
     enum class GameState {waiting, startup, waves, gameplay, gameover};
