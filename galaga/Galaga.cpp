@@ -129,6 +129,7 @@ void Galaga::Waves(CMPUT350::GameContext* context) {
                     context->mEngineView->AddGameObject(enemy);
                 }
                 ++enemy_wave_type;
+                spawned_enemy_count + 8;
                 break;
             case 3:
                 for (int i = 0; i < 8; i++) {
@@ -137,6 +138,7 @@ void Galaga::Waves(CMPUT350::GameContext* context) {
                     context->mEngineView->AddGameObject(enemy);
                 }
                 enemy_wave_type = 1;
+                spawned_enemy_count + 8;
                 break;
         }
     }
