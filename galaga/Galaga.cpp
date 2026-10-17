@@ -7,6 +7,7 @@
 #include "Enemies.h"
 #include "FontData.h"
 #include "Player.h"
+#include "Stars.h"
 namespace CMPUT350 {
 class GameContext;
 
@@ -29,6 +30,11 @@ Galaga::~Galaga() {
 }
 
 void Galaga::Waiting(CMPUT350::GameContext* context) {
+    if (!stars_made) {
+        context->mEngineView->AddGameObject(std::make_shared<Stars>(250, CMPUT350::Rect(0, 0, 768, 1024)));
+        stars_made = true;
+    }
+
     if (coin) {
         if (started) {
             state = GameState::startup;
