@@ -10,3 +10,7 @@ Detailed usage commented in "GameEngine.cpp" step 2 of Run().
 When fixing project performance after features were implemented, queried Microsoft Copilot to resolve a slowdown issue when attempting to close the window with mouse controls. Summary revealed a previously unknown issue where the program would only handle one event per frame (caused by polling with an if statement in the core loop) while mouse actions triggered multiple events. AI recommendationto change core polling to a while statement to clear all queued events in a frame, and to add a similar while statement in the Event::Closed event fixed the issue. Discussed how this edit changed the performance of the program and confirmed mutual understanding.
 
 ### Part B
+1:
+    Detailed usage commented in top of "Font.h"
+    Used VSCode Copilot to trace the cause of compiler error related to _font and _font_len in Font.h. Copilot generated a fix by adding
+    "inline" to declaration in order to prevent mistaken duplicate call

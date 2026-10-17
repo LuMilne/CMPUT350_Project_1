@@ -21,10 +21,12 @@ GameEngine::GameEngine(unsigned int width, unsigned int height, const std::strin
         std::make_shared<sf::RenderWindow>(sf::VideoMode(sf::Vector2u(width, height), 32), name);
     mWindow->setFramerateLimit(30);
     // Load resources. For P(1a), just the font from the header file
+    /*
     mFont = std::make_shared<sf::Font>();
     if (!mFont->openFromMemory(&_font, _font_len)) {
         fprintf(stderr, "WARNING: Font did not load.\n");
     }
+        */
     // Set GameContext using this and this.canvas
     context.mEngineView = this;
     context.ScreenContext = &canvas;
