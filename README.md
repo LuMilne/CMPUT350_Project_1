@@ -14,3 +14,8 @@ When fixing project performance after features were implemented, queried Microso
     Detailed usage commented in top of "Font.h"
     Used VSCode Copilot to trace the cause of compiler error related to _font and _font_len in Font.h. Copilot generated a fix by adding
     "inline" to declaration in order to prevent mistaken duplicate call
+
+2:
+    Detailed usage in MakePath in "Galaga.cpp"
+    Used Claude to get some initial point values for bezier curve for enemies entering to save time trial and erroring initial points.
+    Claude generated a set of points for a cubic bezier that I expanded on and adjusted to better fit a potential path for the enemies
