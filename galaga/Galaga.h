@@ -4,13 +4,14 @@
 
 #ifndef PROJECT1_GALAGA_H
 #define PROJECT1_GALAGA_H
-#include "GameContext.h"
+#include "../engine/GameContext.h"
 namespace CMPUT350 {
 class Galaga : public CMPUT350::GameObject {
 
 public:
     Galaga(int width, int height);
     ~Galaga();
+    void Initialize(GameContext *context) override;
     void Update(CMPUT350::GameContext* context);
     void Waiting(CMPUT350::GameContext* context);
     void StartUp(CMPUT350::GameContext* context);
@@ -32,6 +33,8 @@ private:
     float window_width;
     std::shared_ptr<sf::Font> mFont;
     DrawContext canvas;
+
+    int enemy_wave_type;
 
     int start_frame = 0;
     int level = 1;
