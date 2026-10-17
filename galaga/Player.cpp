@@ -155,13 +155,12 @@ const CMPUT350::Rect& Player::GetBounds()
     return bounds;
 }
 
-// TODO: Implement
-CMPUT350::Point2D GetLocation() {
-    return CMPUT350::Point2D(0.0,0.0);
+CMPUT350::Point2D Player::GetLocation() const {
+    return player_position;
 }
 
-// TODO: Implement
-float GetRotation() {
+// No implementation
+float Player::GetRotation() const {
     return 0.0f;
 }
 
@@ -170,7 +169,7 @@ const std::vector<CMPUT350::Shape> &GetShapes() {
     return std::vector<CMPUT350::Shape>();
 }
 
-const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kRect; }
+const CMPUT350::ShapeType Player::GetType() { return CMPUT350::ShapeType::kRect; }
 
 void Player::SetPosition(const CMPUT350::Point2D current_position, const float new_velocity) {
     player_position.x = current_position.x + new_velocity;

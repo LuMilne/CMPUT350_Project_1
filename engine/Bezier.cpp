@@ -55,7 +55,7 @@ Point2D Bezier::GetSlope(float t) const {
 
 }
 
-static Point2D GetPoint(const std::vector<Point2D> &pts, float t) {
+Point2D Bezier::GetPoint(const std::vector<Point2D> &pts, float t) {
     int idx;
     FindSeg(size(pts), t, idx);
 
@@ -70,7 +70,7 @@ static Point2D GetPoint(const std::vector<Point2D> &pts, float t) {
 
     return bezier_pt;
 }
-static Point2D GetSlope(const std::vector<Point2D> &pts, float t) {
+Point2D Bezier::GetSlope(const std::vector<Point2D> &pts, float t) {
     int idx;
     FindSeg(size(pts), t, idx);
 
