@@ -37,9 +37,11 @@ namespace CMPUT350 {
         Point2D loc;
         Point2D top_Point;
         Point2D head;
+        Point2D biggest_y;
         Rect bounds;
         float velocity;
-        RGBColor colour = Colors::green;
+        RGBColor colour_player = Colors::green;
+        RGBColor colour_enemy = Colors::red;
         std::weak_ptr<CMPUT350::GameObject> parent;
     };
 }
