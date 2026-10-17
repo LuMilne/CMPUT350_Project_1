@@ -79,3 +79,5 @@ const CMPUT350::Rect& Enemy::GetBounds()
     bounds = CMPUT350::Rect(enemy_position.x, enemy_position.y, enemy_width, enemy_height);
     return bounds;
 }
+
+const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kRect; }

@@ -38,6 +38,7 @@ namespace CMPUT350 {
         // Return the internal shapes in the object. Shapes can be:
         // lines, points/circles, or axis-aligned rectangles
         virtual const std::vector<Shape> &GetShapes() = 0;
+        virtual const ShapeType GetType() = 0;
 };
 
 

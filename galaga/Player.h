@@ -27,6 +27,7 @@ public:
     // Collision Object Functions
     void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
     const CMPUT350::Rect& GetBounds() override;
+    const CMPUT350::ShapeType GetType() override;
 
     CMPUT350::Rect ShipPart(CMPUT350::Point2D p, float px, float py, float w, float h);
 

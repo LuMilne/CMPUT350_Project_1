@@ -75,3 +75,5 @@ const CMPUT350::Rect& CMPUT350::Bullet::GetBounds()
     bounds = Rect(loc.x, loc.y, 5, 10);
     return bounds;
 }
+
+const CMPUT350::ShapeType GetType() { return CMPUT350::ShapeType::kLine; }

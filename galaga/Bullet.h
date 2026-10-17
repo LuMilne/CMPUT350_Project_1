@@ -26,6 +26,8 @@ namespace CMPUT350 {
         // Collision Object Functions
         void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
         const CMPUT350::Rect& GetBounds() override;
+        const CMPUT350::ShapeType GetType() override;
+        
     private:
         bool is_player;
         bool alive;

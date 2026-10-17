@@ -19,6 +19,7 @@ public:
     virtual bool HandleKeyEvent(GameContext *context, char key);
     virtual bool IsAlive() const;
     virtual void Kill();
+    // Project 1b additions
     virtual void ReceiveNotification(const std::string& key);
 };
 }  // namespace CMPUT350
