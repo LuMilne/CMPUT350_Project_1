@@ -1,4 +1,5 @@
 #include "Bullet.h"
+#include <numbers>
 
 CMPUT350::Bullet::Bullet(CMPUT350::Point2D location, CMPUT350::Point2D heading, bool player, std::weak_ptr<CMPUT350::GameObject> parent)
 {
@@ -89,6 +90,21 @@ CMPUT350::Point2D CMPUT350::Bullet::GetLocation() const {
     return loc;
 }
 float CMPUT350::Bullet::GetRotation() const {
-    return std::numbers::pi/2;
+    return (float)std::numbers::pi/2;
+}
+
+// TODO: Implement
+CMPUT350::Point2D GetLocation() {
+    return CMPUT350::Point2D(0.0,0.0);
+}
+
+// TODO: Implement
+float GetRotation() {
+    return 0.0f;
+}
+
+// TODO: Implement
+const std::vector<CMPUT350::Shape> &GetShapes() {
+    return std::vector<CMPUT350::Shape>();
 }
 

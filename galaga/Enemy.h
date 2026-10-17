@@ -26,13 +26,15 @@ public:
     // Graphics Object Functions
     void RenderBackground(CMPUT350::GameContext* context) override;
     void RenderForeground(CMPUT350::GameContext* context) override;
-
-
+    CMPUT350::Point2D GetLocation() const override;
+    float GetRotation() const override;
+    
     // Collision Object Functions
     void CollisionEnter(const std::shared_ptr<CMPUT350::CollisionObject>& obj) override;
     void CollisionEnter(const std::shared_ptr<CollisionObject> &obj, const CMPUT350::Point2D &collisionPoint) override;
     const CMPUT350::Rect& GetBounds() override;
     const CMPUT350::ShapeType GetType() override;
+    const std::vector<CMPUT350::Shape> &GetShapes() override;
 
 protected:
     enum class EnemyStatus {enter, in_formation, flying};
@@ -49,6 +51,7 @@ protected:
     float enemy_height = 30;
     float enemy_width = 35;
     CMPUT350::Rect bounds;
+    std::vector<CMPUT350::Shape> shapes;
     CMPUT350::RGBColor colour = CMPUT350::Colors::red;
 };
 
