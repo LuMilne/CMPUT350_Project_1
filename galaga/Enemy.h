@@ -21,7 +21,7 @@ public:
     void SetPosition(const CMPUT350::Point2D& pos);
 
     //Gunna have multiple enemy types
-    virtual bool Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target);
+    virtual bool Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) = 0;
 
     // Graphics Object Functions
     void RenderBackground(CMPUT350::GameContext* context) override;
