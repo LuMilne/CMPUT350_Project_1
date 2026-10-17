@@ -1,19 +1,62 @@
 #include "Enemy.h"
 #include "Bullet.h"
+#include "Bezier.h"
 
 Enemy::Enemy(CMPUT350::Point2D loc)
 {
     // TODO: Update code
     enemy_position = loc;
-    alive = true;
 }
 
 void Enemy::Initialize(CMPUT350::GameContext* context)
 {
+    status = EnemyStatus::enter;
+    alive = true;
 }
 
 void Enemy::Update(CMPUT350::GameContext* context)
 {
+
+    switch (status) {
+        case EnemyStatus::enter: {
+            //float seg = (path.size() - 1) / 3;
+            int FPA = 180;
+
+            float animation_time = (context->currentFrame % FPA) / static_cast<float>(FPA);
+            CMPUT350::Point2D square_position = CMPUT350::Bezier::GetPoint(path, animation_time);
+            SetPosition({square_position.x, square_position.y});
+
+            if (animation_time >= 1) {
+                status = EnemyStatus::in_formation;
+            }
+            break;
+        }
+        case EnemyStatus::in_formation: {
+            if (odd_row) {
+                velocity = 2;
+            }else {
+                velocity = -2;
+            }
+
+            enemy_position.x += velocity;
+
+            if (enemy_position.x + 20 >= 720) {
+                odd_row = false;
+                enemy_position.y += 80;
+
+            }else if (enemy_position.x - 20 <= 0) {
+                odd_row = true;
+                enemy_position.y += 80;
+            }
+
+            enemy_return_position = enemy_position;
+            break;
+        }
+        case EnemyStatus::flying: {
+            break;
+        }
+    }
+
     bounds = GetBounds();
 }
 
@@ -78,4 +121,8 @@ const CMPUT350::Rect& Enemy::GetBounds()
     // TODO: Update code
     bounds = CMPUT350::Rect(enemy_position.x, enemy_position.y, enemy_width, enemy_height);
     return bounds;
+}
+
+void Enemy::SetPosition(const CMPUT350::Point2D& pos) {
+    enemy_position = pos;
 }

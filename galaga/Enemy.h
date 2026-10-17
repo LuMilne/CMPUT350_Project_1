@@ -8,7 +8,7 @@ class Enemy : public CMPUT350::CollisionObject
 {
 public:
     Enemy(CMPUT350::Point2D loc);
-    Enemy(CMPUT350::Point2D loc, const std::vector<CMPUT350::Point2D>& path);
+    Enemy(CMPUT350::Point2D loc, const std::vector<CMPUT350::Point2D>& path) : enemy_position(loc), path(path) {}
 
     // GameObject Functions
     void Initialize(CMPUT350::GameContext* context) override;
@@ -18,6 +18,7 @@ public:
     void ReceiveNotification(const std::string& key) override;
     bool IsAlive() const override;
     void Kill() override;
+    void SetPosition(const CMPUT350::Point2D& pos);
 
     //Gunna have multiple enemy types
     virtual bool Attack(CMPUT350::GameContext *context, const CMPUT350::Point2D &target) = 0;
@@ -33,10 +34,16 @@ public:
     const CMPUT350::Rect& GetBounds() override;
 
 protected:
+    enum class EnemyStatus {enter, in_formation, flying};
+    EnemyStatus status;
+
     bool alive;
     float velocity;
     int health;
+    bool odd_row = true;
     CMPUT350::Point2D enemy_position;
+    CMPUT350::Point2D enemy_return_position;
+    std::vector<CMPUT350::Point2D> path;
     std::string_view tag = "Enemy";
     float enemy_height = 30;
     float enemy_width = 35;
