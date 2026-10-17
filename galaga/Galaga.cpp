@@ -160,6 +160,7 @@ void Galaga::GamePlay(CMPUT350::GameContext* context) {
     DisplayScoreText();
     DisplayLevelText();
 
+    //NOTE: make sure if player loses a life, enemies finish attack animation before respawn. Pause enemy side to side movement
 }
 void Galaga::GameOver(CMPUT350::GameContext* context) {
 
